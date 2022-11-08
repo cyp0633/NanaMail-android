@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NanaMail</string>
+    <string name="inbox">收件箱</string>
+    <string name="sent">已发送</string>
+    <string name="compose_mail">写邮件</string>
+    <string name="setup">设置向导</string>
+    <string name="finish_basic_settings">现在，让我们完成一些基本设置</string>
+    <string name="mail_address">电子邮件地址</string>
+    <string name="password">密码</string>
+</resources>
