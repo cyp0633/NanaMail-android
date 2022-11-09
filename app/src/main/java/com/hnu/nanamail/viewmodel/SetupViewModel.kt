@@ -8,7 +8,7 @@ import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Pop3Backend
 import com.hnu.nanamail.data.SmtpBackend
 
-class SetupViewModel(application: Application):AndroidViewModel(application) {
+class SetupViewModel(application: Application) : AndroidViewModel(application) {
     // 输入框内容
     val mailAddress = mutableStateOf("")
     val password = mutableStateOf("")
@@ -25,10 +25,13 @@ class SetupViewModel(application: Application):AndroidViewModel(application) {
     // 提示框内容
     var showDialog = mutableStateOf(false)
     var onDismissRequest = {}
-    val dialogText = ""
+    var dialogText = ""
 
     fun verify(): String {
-        var result:String
+        var result: String
+        if (mailAddress.value == "" || password.value == "" || pop3Server.value == "" || receiveEncryptMethod.value == "" || receivePortNumber.value == "" || smtpServer.value == "" || sendEncryptMethod.value == "" || sendPortNumber.value == "") {
+            return "请填写完整信息"
+        }
         val smtpBackend = SmtpBackend(
             mailAddress.value,
             password.value,
@@ -38,7 +41,7 @@ class SetupViewModel(application: Application):AndroidViewModel(application) {
         )
         result = smtpBackend.verify()
         if (result != "success") {
-            return result
+            return "SMTP 验证错误：$result"
         }
         val pop3Backend = Pop3Backend(
             mailAddress.value,
@@ -48,6 +51,10 @@ class SetupViewModel(application: Application):AndroidViewModel(application) {
             receivePortNumber.value.toInt()
         )
         result = pop3Backend.verify()
-        return result
+        return if (result != "success") {
+            "POP3 验证错误：$result"
+        } else {
+            "success"
+        }
     }
 }

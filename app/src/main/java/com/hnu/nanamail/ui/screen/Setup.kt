@@ -27,10 +27,26 @@ fun SetupScreen(
     viewModel: SetupViewModel
 ) {
     if (viewModel.showDialog.value) {
-        Dialog(
-            onDismissRequest = viewModel.onDismissRequest,
-            content = {
+//        Dialog(
+//            onDismissRequest = viewModel.onDismissRequest,
+//            content = {
+//                Text(text = viewModel.dialogText)
+//            }
+//        )
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onDismissRequest
+                viewModel.showDialog.value = false
+            },
+            title = {
                 Text(text = viewModel.dialogText)
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.onDismissRequest; viewModel.showDialog.value = false
+                }) {
+                    Text(text = stringResource(id = R.string.confirm))
+                }
             }
         )
     }
@@ -63,12 +79,12 @@ fun SetupScreen(
                 value = viewModel.mailAddress.value,
                 onValueChange = {
                     viewModel.mailAddress.value = it
-                    if(it.contains("@")){
+                    if (it.contains("@")) {
                         val server = it.substring(it.indexOf("@") + 1)
-                        if(!viewModel.modifiedPop3Server.value){
+                        if (!viewModel.modifiedPop3Server.value) {
                             viewModel.pop3Server.value = "pop3.$server"
                         }
-                        if(!viewModel.modifiedSmtpServer.value){
+                        if (!viewModel.modifiedSmtpServer.value) {
                             viewModel.smtpServer.value = "smtp.$server"
                         }
                     }
@@ -169,7 +185,10 @@ fun SetupScreen(
                 onClick = {
                     val result = viewModel.verify()
                     if (result == "success") {
+                        viewModel.dialogText = "连接成功"
                         viewModel.onDismissRequest = { navController.navigate("inbox") }
+                    } else {
+                        viewModel.dialogText = result
                     }
                     viewModel.showDialog.value = true
                 },
@@ -187,5 +206,8 @@ fun SetupScreen(
 @Preview
 @Composable
 fun SetupScreenPreview() {
-    SetupScreen(navController = NavController(LocalContext.current), viewModel = SetupViewModel(Application()))
+    SetupScreen(
+        navController = NavController(LocalContext.current),
+        viewModel = SetupViewModel(Application())
+    )
 }
