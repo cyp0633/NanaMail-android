@@ -1,6 +1,7 @@
 package com.hnu.nanamail.ui.screen
 
 
+import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -213,5 +214,5 @@ fun SetupScreen(
 @Preview
 @Composable
 fun SetupScreenPreview() {
-    SetupScreen(navController = NavController(LocalContext.current), viewModel = SetupViewModel())
+    SetupScreen(navController = NavController(LocalContext.current), viewModel = SetupViewModel(Application()))
 }

@@ -1,10 +1,12 @@
 package com.hnu.nanamail.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Pop3Backend
 import com.hnu.nanamail.data.SmtpBackend
 
-class SetupViewModel:ViewModel() {
+class SetupViewModel(application: Application):ViewModel() {
     fun verify(
         mailAddress: String,
         password: String,
@@ -21,7 +23,7 @@ class SetupViewModel:ViewModel() {
             password,
             smtpServer,
             sendEncryptMethod,
-            sendPortNumber
+            sendPortNumber.toInt()
         )
         result = smtpBackend.verify()
         if (result != "success") {
