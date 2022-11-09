@@ -1,10 +1,12 @@
 package com.hnu.nanamail.ui.screen
 
+import android.app.Application
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +15,7 @@ import com.hnu.nanamail.R
 import com.hnu.nanamail.viewmodel.SetupViewModel
 
 @Composable
-fun NavScreen() {
+fun NavScreen(application: Application) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "setup") {
         composable(NavItem.Setup.route) {

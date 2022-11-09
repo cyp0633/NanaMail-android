@@ -1,5 +1,6 @@
 package com.hnu.nanamail
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavScreen()
+                    NavScreen(application = application)
                 }
             }
         }
@@ -34,6 +35,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     NanaMailTheme {
-        NavScreen()
+        NavScreen(Application())
     }
 }
