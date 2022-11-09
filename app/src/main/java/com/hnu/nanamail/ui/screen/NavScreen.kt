@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,9 +17,10 @@ fun NavScreen() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "setup") {
         composable(NavItem.Setup.route) {
+            val viewModel = ViewModelProvider(it)[SetupViewModel::class.java]
             SetupScreen(
                 navController = navController,
-                SetupViewModel()
+                viewModel = viewModel
             )
         }
     }

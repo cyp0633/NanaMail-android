@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.viewmodel.SetupViewModel
@@ -22,20 +23,34 @@ import com.hnu.nanamail.viewmodel.SetupViewModel
 @Composable
 fun SetupScreen(
     navController: NavController,
-    setupViewModel: SetupViewModel
+    viewModel: SetupViewModel
 ) {
-    val mailAddress = remember { mutableStateOf("")}
-    val password = remember { mutableStateOf("")}
-    val pop3Server = remember { mutableStateOf("")}
-    val receiveEncryptMethod = remember { mutableStateOf("")}
-    val receivePortNumber = remember { mutableStateOf("")}
-    val smtpServer = remember { mutableStateOf("")}
-    val sendEncryptMethod = remember { mutableStateOf("")}
-    val sendPortNumber = remember { mutableStateOf("")}
-    Scaffold(
+    // 输入框内容
+    val mailAddress = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val pop3Server = remember { mutableStateOf("") }
+    val receiveEncryptMethod = remember { mutableStateOf("") }
+    val receivePortNumber = remember { mutableStateOf("") }
+    val smtpServer = remember { mutableStateOf("") }
+    val sendEncryptMethod = remember { mutableStateOf("") }
+    val sendPortNumber = remember { mutableStateOf("") }
 
-    ) { PaddingValues->
-        Column (
+    // 提示框内容
+    var showDialog = false
+    var onDismissRequest = {}
+    val text = ""
+
+    if (showDialog) {
+        Dialog(
+            onDismissRequest = onDismissRequest,
+            content = {
+                Text(text = text)
+            }
+        )
+    }
+
+    Scaffold { PaddingValues ->
+        Column(
             modifier = Modifier
                 .padding(PaddingValues)
                 .padding(horizontal = 40.dp)
@@ -133,7 +148,22 @@ fun SetupScreen(
                     .fillMaxWidth(),
             )
             Button(
-                onClick = { TODO("保存并验证登录信息") },
+                onClick = {
+                    val result = viewModel.verify(
+                        mailAddress.value,
+                        password.value,
+                        pop3Server.value,
+                        receiveEncryptMethod.value,
+                        receivePortNumber.value,
+                        smtpServer.value,
+                        sendEncryptMethod.value,
+                        sendPortNumber.value
+                    )
+                    if (result == "success") {
+                        onDismissRequest = { navController.navigate("inbox") }
+                    }
+                    showDialog = true
+                },
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .fillMaxWidth(),
@@ -148,5 +178,5 @@ fun SetupScreen(
 @Preview
 @Composable
 fun SetupScreenPreview() {
-    SetupScreen(navController = NavController(LocalContext.current), setupViewModel = SetupViewModel())
+    SetupScreen(navController = NavController(LocalContext.current), viewModel = SetupViewModel())
 }
