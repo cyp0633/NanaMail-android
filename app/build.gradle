@@ -74,4 +74,13 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
+    // koin
+    def koin_version = "3.2.2"
+    def koin_android_version = "3.3.0"
+    def koin_android_compose_version = "3.3.0"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_android_version"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_android_version"
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_android_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_android_compose_version"
 }
