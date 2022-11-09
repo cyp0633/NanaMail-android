@@ -6,14 +6,21 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hnu.nanamail.R
+import com.hnu.nanamail.viewmodel.SetupViewModel
 
 @Composable
 fun NavScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "inbox") {
-
+    NavHost(navController = navController, startDestination = "setup") {
+        composable(NavItem.Setup.route) {
+            SetupScreen(
+                navController = navController,
+                SetupViewModel()
+            )
+        }
     }
 }
 

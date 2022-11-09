@@ -7,4 +7,15 @@
     <string name="finish_basic_settings">现在，让我们完成一些基本设置</string>
     <string name="mail_address">电子邮件地址</string>
     <string name="password">密码</string>
+    <string name="basic_account_info">账户基本信息</string>
+    <string name="receive_server_info">收件服务器设定</string>
+    <string name="pop3_server">POP3 服务器地址</string>
+    <string name="receive_encrypt_method">接收加密方法</string>
+    <string name="receive_port_number">接收服务器端口号</string>
+    <string name="receive_username">接收用户名</string>
+    <string name="send_server_info">发件服务器设定</string>
+    <string name="smtp_server">SMTP 服务器地址</string>
+    <string name="send_encrypt_method">发送加密方法</string>
+    <string name="send_port_number">发送服务器端口号</string>
+    <string name="save_and_verify">保存并验证</string>
 </resources>
