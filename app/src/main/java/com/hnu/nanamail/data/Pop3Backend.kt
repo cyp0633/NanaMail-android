@@ -5,7 +5,7 @@ class Pop3Backend(
     var password: String,
     var server: String,
     var encryptMethod: String,
-    var portNumber: String
+    var portNumber: Int
 ) {
     fun verify(): String {
         return "success"

@@ -26,29 +26,11 @@ fun SetupScreen(
     navController: NavController,
     viewModel: SetupViewModel
 ) {
-    // 输入框内容
-    val mailAddress = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val pop3Server = remember { mutableStateOf("") }
-    val receiveEncryptMethod = remember { mutableStateOf("") }
-    val receivePortNumber = remember { mutableStateOf("") }
-    val smtpServer = remember { mutableStateOf("") }
-    val sendEncryptMethod = remember { mutableStateOf("") }
-    val sendPortNumber = remember { mutableStateOf("") }
-
-    val modifiedPop3Server = remember { mutableStateOf(false) }
-    val modifiedSmtpServer = remember { mutableStateOf(false) }
-
-    // 提示框内容
-    var showDialog = false
-    var onDismissRequest = {}
-    val text = ""
-
-    if (showDialog) {
+    if (viewModel.showDialog.value) {
         Dialog(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = viewModel.onDismissRequest,
             content = {
-                Text(text = text)
+                Text(text = viewModel.dialogText)
             }
         )
     }
@@ -78,16 +60,16 @@ fun SetupScreen(
             )
             // 邮箱地址
             TextField(
-                value = mailAddress.value,
+                value = viewModel.mailAddress.value,
                 onValueChange = {
-                    mailAddress.value = it
+                    viewModel.mailAddress.value = it
                     if(it.contains("@")){
                         val server = it.substring(it.indexOf("@") + 1)
-                        if(!modifiedPop3Server.value){
-                            pop3Server.value = "pop3.$server"
+                        if(!viewModel.modifiedPop3Server.value){
+                            viewModel.pop3Server.value = "pop3.$server"
                         }
-                        if(!modifiedSmtpServer.value){
-                            smtpServer.value = "smtp.$server"
+                        if(!viewModel.modifiedSmtpServer.value){
+                            viewModel.smtpServer.value = "smtp.$server"
                         }
                     }
                 },
@@ -98,8 +80,8 @@ fun SetupScreen(
             )
             // 密码
             TextField(
-                value = password.value,
-                onValueChange = { password.value = it },
+                value = viewModel.password.value,
+                onValueChange = { viewModel.password.value = it },
                 label = { Text(text = stringResource(id = R.string.password)) },
                 modifier = Modifier
                     .padding(vertical = 10.dp)
@@ -116,10 +98,10 @@ fun SetupScreen(
             )
             // POP3服务器
             TextField(
-                value = pop3Server.value,
+                value = viewModel.pop3Server.value,
                 onValueChange = {
-                    modifiedPop3Server.value = true
-                    pop3Server.value = it
+                    viewModel.modifiedPop3Server.value = true
+                    viewModel.pop3Server.value = it
                 },
                 label = { Text(text = stringResource(id = R.string.pop3_server)) },
                 modifier = Modifier
@@ -128,8 +110,8 @@ fun SetupScreen(
             )
             // 加密方式
             TextField(
-                value = receiveEncryptMethod.value,
-                onValueChange = { receiveEncryptMethod.value = it },
+                value = viewModel.receiveEncryptMethod.value,
+                onValueChange = { viewModel.receiveEncryptMethod.value = it },
                 label = { Text(text = stringResource(id = R.string.receive_encrypt_method)) },
                 modifier = Modifier
                     .padding(vertical = 10.dp)
@@ -137,8 +119,8 @@ fun SetupScreen(
             )
             // 端口号
             TextField(
-                value = receivePortNumber.value,
-                onValueChange = { receivePortNumber.value = it },
+                value = viewModel.receivePortNumber.value,
+                onValueChange = { viewModel.receivePortNumber.value = it },
                 label = { Text(text = stringResource(id = R.string.receive_port_number)) },
                 modifier = Modifier
                     .padding(vertical = 10.dp)
@@ -154,10 +136,10 @@ fun SetupScreen(
             )
             // SMTP服务器
             TextField(
-                value = smtpServer.value,
+                value = viewModel.smtpServer.value,
                 onValueChange = {
-                    modifiedSmtpServer.value = true
-                    smtpServer.value = it
+                    viewModel.modifiedSmtpServer.value = true
+                    viewModel.smtpServer.value = it
                 },
                 label = { Text(text = stringResource(id = R.string.smtp_server)) },
                 modifier = Modifier
@@ -166,8 +148,8 @@ fun SetupScreen(
             )
             // 加密方式
             TextField(
-                value = sendEncryptMethod.value,
-                onValueChange = { sendEncryptMethod.value = it },
+                value = viewModel.sendEncryptMethod.value,
+                onValueChange = { viewModel.sendEncryptMethod.value = it },
                 label = { Text(text = stringResource(id = R.string.send_encrypt_method)) },
                 modifier = Modifier
                     .padding(vertical = 10.dp)
@@ -175,8 +157,8 @@ fun SetupScreen(
             )
             // 端口号
             TextField(
-                value = sendPortNumber.value,
-                onValueChange = { sendPortNumber.value = it },
+                value = viewModel.sendPortNumber.value,
+                onValueChange = { viewModel.sendPortNumber.value = it },
                 label = { Text(text = stringResource(id = R.string.send_port_number)) },
                 modifier = Modifier
                     .padding(vertical = 10.dp)
@@ -185,20 +167,11 @@ fun SetupScreen(
             // 完成
             Button(
                 onClick = {
-                    val result = viewModel.verify(
-                        mailAddress.value,
-                        password.value,
-                        pop3Server.value,
-                        receiveEncryptMethod.value,
-                        receivePortNumber.value,
-                        smtpServer.value,
-                        sendEncryptMethod.value,
-                        sendPortNumber.value
-                    )
+                    val result = viewModel.verify()
                     if (result == "success") {
-                        onDismissRequest = { navController.navigate("inbox") }
+                        viewModel.onDismissRequest = { navController.navigate("inbox") }
                     }
-                    showDialog = true
+                    viewModel.showDialog.value = true
                 },
                 modifier = Modifier
                     .padding(vertical = 20.dp)
