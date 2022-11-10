@@ -3,6 +3,7 @@ package com.hnu.nanamail.ui.screen
 import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,17 +26,23 @@ fun InboxScreen(
 ) {
     Scaffold(
         topBar = {
-            TopBarComponent(
-                title = "收件箱"
-            )
+            InboxTopBarComponent {
+                navController.navigate(NavItem.Compose.route)
+            }
         },
     ) {
-        Column (
+        Column(
             modifier = Modifier
-                .padding(horizontal = 40.dp)
+                .padding(horizontal = 20.dp)
                 .padding(it)
-                ) {
-
+        ) {
+            TrashEntryComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+            ) {
+                navController.navigate("trash")
+            }
         }
     }
 }
@@ -45,7 +52,7 @@ fun InboxScreen(
 @Composable
 fun TrashEntryComponent(
     modifier: Modifier = Modifier,
-    onClick: ()->Unit,
+    onClick: () -> Unit,
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -55,11 +62,11 @@ fun TrashEntryComponent(
         modifier = Modifier
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
-        onClick = {onClick()}
+        onClick = { onClick() }
     ) {
         Row(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(horizontal = 30.dp, vertical = 10.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -76,6 +83,35 @@ fun TrashEntryComponent(
             )
         }
     }
+}
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun InboxTopBarComponent(
+    onClickCompose: () -> Unit,
+) {
+    CenterAlignedTopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+        title = {
+            Text(
+                text = stringResource(id = R.string.inbox),
+                style = MaterialTheme.typography.titleLarge,
+            )
+        },
+        actions = {
+            IconButton(onClick = { onClickCompose() }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+            actionIconContentColor = MaterialTheme.colorScheme.primary,
+        )
+    )
 }
 
 @Preview
@@ -95,3 +131,10 @@ fun TrashEntryComponentPreview() {
     )
 }
 
+@Preview
+@Composable
+fun InboxTopBarComponentPreview() {
+    InboxTopBarComponent(
+        onClickCompose = {}
+    )
+}
