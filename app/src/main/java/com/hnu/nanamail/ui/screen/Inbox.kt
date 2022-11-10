@@ -163,18 +163,31 @@ fun MailItemComponent(
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.Bottom,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = mail.sender,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (mail.isRead) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.secondary
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = mail.sender,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = if (mail.isRead) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.secondary
+                            }
+                        )
+                        if(mail.hasAttachment) {
+                            Spacer(modifier = Modifier.width(3.dp))
+                            Icon(
+                                painter = painterResource(id = R.drawable.attachment),
+                                contentDescription = null,
+                                modifier = Modifier.size(15.dp),
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
                         }
-                    )
+                    }
                     Text(
                         text = mail.getTimeStr(),
                         style = MaterialTheme.typography.bodySmall,
@@ -239,7 +252,7 @@ fun InboxTopBarComponentPreview() {
     )
 }
 
-@Preview
+@Preview(name = "未读邮件")
 @Composable
 fun MailItemComponentPreview() {
     MailItemComponent(
@@ -253,8 +266,34 @@ fun MailItemComponentPreview() {
             title = "测试标题",
             content = "测试内容",
             preview = "测试预览",
-            isRead = true,
+            isRead = false,
             hasAttachment = true,
+            type = MailType.INBOX,
+            attachmentDownloaded = false,
+            uid = 1,
+            time = 1668090507,
+        ),
+        onClick = {},
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(name = "已读邮件")
+@Composable
+fun ReadMailItemComponentPreview() {
+    MailItemComponent(
+        mail = Mail(
+            uuid = "1",
+            account = "test",
+            sender = "sender",
+            senderAddress = "sender@test",
+            receiveTo = "test, test2",
+            receiveCc = "test3",
+            title = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
+            content = "测试内容",
+            preview = "测试预览",
+            isRead = true,
+            hasAttachment = false,
             type = MailType.INBOX,
             attachmentDownloaded = false,
             uid = 1,
