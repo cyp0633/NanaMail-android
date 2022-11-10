@@ -20,4 +20,5 @@
     <string name="send_port_number">Sending server port number</string>
     <string name="save_and_verify">Save and verify</string>
     <string name="confirm">OK</string>
+    <string name="trash_mail">Trash mail</string>
 </resources>

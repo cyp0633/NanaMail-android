@@ -19,4 +19,6 @@
     <string name="send_port_number">发送服务器端口号</string>
     <string name="save_and_verify">保存并验证</string>
     <string name="confirm">好</string>
+    <string name="trash_mail">垃圾邮件</string>
+
 </resources>
