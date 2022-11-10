@@ -1,4 +1,7 @@
 package com.hnu.nanamail.viewmodel
 
-class InboxViewModel {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+
+class InboxViewModel(application: Application):AndroidViewModel(application) {
 }
