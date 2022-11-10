@@ -17,7 +17,7 @@ import com.hnu.nanamail.viewmodel.SetupViewModel
 @Composable
 fun NavScreen(application: Application) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "setup") {
+    NavHost(navController = navController, startDestination = NavItem.Inbox.route) {
         composable(NavItem.Setup.route) {
             val viewModel = ViewModelProvider(it)[SetupViewModel::class.java]
             SetupScreen(

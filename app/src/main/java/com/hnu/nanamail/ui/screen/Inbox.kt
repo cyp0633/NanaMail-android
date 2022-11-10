@@ -6,6 +6,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,6 +27,27 @@ fun InboxScreen(
     viewModel: InboxViewModel,
     navController: NavController
 ) {
+    val login = remember { mutableStateOf(true) }
+    if (!viewModel.checkLogin()) {
+        login.value = false
+    }
+    if (!login.value) {
+        AlertDialog(
+            onDismissRequest = {
+                navController.navigate(NavItem.Setup.route)
+            },
+            title = {
+                Text(text = stringResource(id = R.string.no_login))
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    navController.navigate(NavItem.Setup.route)
+                }) {
+                    Text(text = stringResource(id = R.string.confirm))
+                }
+            }
+        )
+    }
     Scaffold(
         topBar = {
             InboxTopBarComponent {
@@ -84,6 +108,7 @@ fun TrashEntryComponent(
         }
     }
 }
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun InboxTopBarComponent(

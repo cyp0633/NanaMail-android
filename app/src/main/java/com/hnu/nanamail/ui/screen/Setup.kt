@@ -24,12 +24,6 @@ fun SetupScreen(
     viewModel: SetupViewModel
 ) {
     if (viewModel.showDialog.value) {
-//        Dialog(
-//            onDismissRequest = viewModel.onDismissRequest,
-//            content = {
-//                Text(text = viewModel.dialogText)
-//            }
-//        )
         AlertDialog(
             onDismissRequest = {
                 viewModel.onDismissRequest

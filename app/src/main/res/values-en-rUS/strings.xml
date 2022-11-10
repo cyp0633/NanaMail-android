@@ -21,4 +21,6 @@
     <string name="save_and_verify">Save and verify</string>
     <string name="confirm">OK</string>
     <string name="trash_mail">Trash mail</string>
+    <string name="no_login">Not logined</string>
+    <string name="no_login">Not logined</string>
 </resources>
