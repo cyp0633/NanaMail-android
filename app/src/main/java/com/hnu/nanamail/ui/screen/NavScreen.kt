@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hnu.nanamail.R
+import com.hnu.nanamail.viewmodel.InboxViewModel
 import com.hnu.nanamail.viewmodel.SetupViewModel
 
 @Composable
@@ -21,6 +22,13 @@ fun NavScreen(application: Application) {
         composable(NavItem.Setup.route) {
             val viewModel = ViewModelProvider(it)[SetupViewModel::class.java]
             SetupScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+        composable(NavItem.Inbox.route) {
+            val viewModel = ViewModelProvider(it)[InboxViewModel::class.java]
+            InboxScreen(
                 navController = navController,
                 viewModel = viewModel
             )
