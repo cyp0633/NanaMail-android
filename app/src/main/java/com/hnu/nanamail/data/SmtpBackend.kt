@@ -1,10 +1,14 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
+import com.sun.mail.util.MailSSLSocketFactory
 import java.util.Properties
 import javax.mail.AuthenticationFailedException
+import javax.mail.Authenticator
 import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
 import javax.mail.Session
+import javax.mail.Transport
 
 class SmtpBackend(
     private var mailAddress: String,
@@ -16,41 +20,35 @@ class SmtpBackend(
     fun verify(): String {
         try {
             val props = Properties()
-            props["mail.smtp.auth"] = "true"
-            when (encryptMethod) {
-                "SSL" -> {
-                    props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
-                    props["mail.smtp.socketFactory.fallback"] = "false"
-                    props["mail.smtp.socketFactory.port"] = portNumber
-                }
-                "TLS" -> {
-                    props["mail.smtp.starttls.enable"] = "true"
-                    props["mail.smtp.starttls.required"] = "true"
+            props["mail.transport.protocol"] = "smtp"
+            props["mail.smtp.host"] = server
+//            props["mail.smtp.auth"] = "true"
+            props["mail.smtp.port"] = portNumber
+            if (encryptMethod != "") {
+                props["mail.smtp.starttls.enable"] = "true"
+            }
+            val auth = object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(mailAddress, password)
                 }
             }
-            val session = Session.getInstance(props)
-            val transport: javax.mail.Transport = if (encryptMethod == "") {
-                session.setProtocolForAddress("rfc822", "smtp")
-                session.getTransport("smtp")
-            } else {
-                session.setProtocolForAddress("rfc822", "smtps")
-                session.getTransport("smtps")
-            }
-            transport.connect(server, portNumber, mailAddress, password)
+            val session = Session.getInstance(props, auth)
+            val transport = session.transport
+            transport.connect()
             transport.close()
             return "success"
         } catch (e: AuthenticationFailedException) {
-            Log.e("SmtpBackend", "Authentication failed")
+            Log.e("SmtpBackend", "Authentication failed: ${e.message}")
             e.printStackTrace()
-            return "Authentication failed"
+            return "Authentication failed: ${e.message}"
         } catch (e: MessagingException) {
-            Log.e("SmtpBackend", "MessagingException")
+            Log.e("SmtpBackend", "MessagingException: ${e.message}")
             e.printStackTrace()
-            return "MessagingException"
+            return "MessagingException: ${e.message}"
         } catch (e: Exception) {
-            Log.e("SmtpBackend", "Exception")
+            Log.e("SmtpBackend", "Exception: ${e.message}")
             e.printStackTrace()
-            return "Exception"
+            return "Exception: ${e.message}"
         }
     }
 }
