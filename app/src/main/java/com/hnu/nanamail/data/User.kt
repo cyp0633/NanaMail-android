@@ -14,11 +14,11 @@ data class User(
     @ColumnInfo(name = "receive_encrypt_method")
     val receiveEncryptMethod: String,
     @ColumnInfo(name = "receive_port_number")
-    val receivePortNumber: String,
+    val receivePortNumber: Int,
     @ColumnInfo(name = "smtp_server")
     val smtpServer: String,
     @ColumnInfo(name = "send_encrypt_method")
     val sendEncryptMethod: String,
     @ColumnInfo(name = "send_port_number")
-    val sendPortNumber: String
+    val sendPortNumber: Int
 )

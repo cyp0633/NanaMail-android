@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Pop3Backend
 import com.hnu.nanamail.data.SmtpBackend
+import com.hnu.nanamail.data.User
 
 class SetupViewModel(application: Application) : AndroidViewModel(application) {
     // 输入框内容
@@ -51,10 +52,27 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
             receivePortNumber.value.toInt()
         )
         result = pop3Backend.verify()
-        return if (result != "success") {
-            "POP3 验证错误：$result"
-        } else {
-            "success"
+        if(result!="success"){
+            return "POP3 验证错误：$result"
         }
+        // 保存用户信息，目前只有一个用户，所以把以前的先删掉
+        val db = AppDatabase.getDatabase(getApplication())
+        val existUser = db.userDao().getUser()
+        if(existUser!=null){
+            db.userDao().deleteUser(existUser)
+        }
+        db.userDao().insertUser(
+            User(
+                mailAddress.value,
+                password.value,
+                pop3Server.value,
+                receiveEncryptMethod.value,
+                receivePortNumber.value.toInt(),
+                smtpServer.value,
+                sendEncryptMethod.value,
+                sendPortNumber.value.toInt()
+            )
+        )
+        return "success"
     }
 }
