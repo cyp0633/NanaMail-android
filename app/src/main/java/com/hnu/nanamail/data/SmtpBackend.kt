@@ -17,7 +17,7 @@ class SmtpBackend(
         try {
             val props = Properties()
             props["mail.smtp.auth"] = "true"
-            when(encryptMethod) {
+            when (encryptMethod) {
                 "SSL" -> {
                     props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
                     props["mail.smtp.socketFactory.fallback"] = "false"
@@ -29,8 +29,14 @@ class SmtpBackend(
                 }
             }
             val session = Session.getInstance(props)
-            val transport = session.getTransport("smtp")
-            transport.connect(server,portNumber,mailAddress,password)
+            val transport: javax.mail.Transport = if (encryptMethod == "") {
+                session.setProtocolForAddress("rfc822", "smtp")
+                session.getTransport("smtp")
+            } else {
+                session.setProtocolForAddress("rfc822", "smtps")
+                session.getTransport("smtps")
+            }
+            transport.connect(server, portNumber, mailAddress, password)
             transport.close()
             return "success"
         } catch (e: AuthenticationFailedException) {
