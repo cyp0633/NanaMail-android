@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -176,14 +177,17 @@ fun MailItemComponent(
                                 MaterialTheme.colorScheme.primary
                             } else {
                                 MaterialTheme.colorScheme.secondary
-                            }
+                            },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
-                        if(mail.hasAttachment) {
-                            Spacer(modifier = Modifier.width(3.dp))
+                        if (mail.hasAttachment) {
                             Icon(
                                 painter = painterResource(id = R.drawable.attachment),
                                 contentDescription = null,
-                                modifier = Modifier.size(15.dp),
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .padding(horizontal = 3.dp),
                                 tint = MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -207,6 +211,7 @@ fun MailItemComponent(
                         MaterialTheme.colorScheme.secondary
                     },
                     maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = mail.preview,
@@ -217,6 +222,7 @@ fun MailItemComponent(
                         MaterialTheme.colorScheme.secondary
                     },
                     maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -265,7 +271,7 @@ fun MailItemComponentPreview() {
             receiveCc = "test3",
             title = "测试标题",
             content = "测试内容",
-            preview = "测试预览",
+            preview = "测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览",
             isRead = false,
             hasAttachment = true,
             type = MailType.INBOX,
