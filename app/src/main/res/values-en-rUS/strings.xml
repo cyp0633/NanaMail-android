@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NanaMail</string>
+    <string name="inbox">Inbox</string>
+    <string name="sent">Sent</string>
+    <string name="compose_mail">Compose Mail</string>
+    <string name="setup">Setup</string>
+    <string name="finish_basic_settings">Now, let\'s complete some basic settings</string>
+    <string name="mail_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="basic_account_info">Basic account info</string>
+    <string name="receive_server_info">Receiving server info</string>
+    <string name="pop3_server">POP3 server address</string>
+    <string name="receive_encrypt_method">Receiving encryption method</string>
+    <string name="receive_port_number">Receiving port number</string>
+    <string name="receive_username">Receiving username</string>
+    <string name="send_server_info">Sending server information</string>
+    <string name="smtp_server">SMTP server address</string>
+    <string name="send_encrypt_method">Sending encryption method</string>
+    <string name="send_port_number">Sending server port number</string>
+    <string name="save_and_verify">Save and verify</string>
+    <string name="confirm">OK</string>
+</resources>
