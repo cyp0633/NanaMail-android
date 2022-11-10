@@ -3,6 +3,8 @@ package com.hnu.nanamail.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Entity
 data class Mail(
@@ -49,4 +51,12 @@ data class Mail(
     // 类型
     @ColumnInfo(name = "type")
     val type: MailType,
+    // 时间
+    @ColumnInfo(name = "time")
+    val time: Long
 )
+
+fun Mail.getTimeStr(): String {
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("zh", "CN"))
+    return simpleDateFormat.format(Date(time * 1000))
+}

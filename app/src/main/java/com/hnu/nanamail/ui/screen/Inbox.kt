@@ -2,11 +2,11 @@ package com.hnu.nanamail.ui.screen
 
 import android.app.Application
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,9 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.hnu.nanamail.ui.component.TopBarComponent
 import com.hnu.nanamail.viewmodel.InboxViewModel
 import com.hnu.nanamail.R
+import com.hnu.nanamail.data.Mail
+import com.hnu.nanamail.data.MailType
+import com.hnu.nanamail.data.getTimeStr
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -139,6 +141,79 @@ fun InboxTopBarComponent(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MailItemComponent(
+    mail: Mail,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Card(
+            modifier = modifier,
+            onClick = { onClick() },
+            shape = RoundedCornerShape(0.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = mail.sender,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (mail.isRead) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.secondary
+                        }
+                    )
+                    Text(
+                        text = mail.getTimeStr(),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (mail.isRead) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.secondary
+                        }
+                    )
+                }
+                Text(
+                    text = mail.title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (mail.isRead) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.secondary
+                    },
+                    maxLines = 1,
+                )
+                Text(
+                    text = mail.preview,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (mail.isRead) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.secondary
+                    },
+                    maxLines = 1,
+                )
+            }
+        }
+        Divider(
+            color = MaterialTheme.colorScheme.primary,
+            thickness = 1.dp,
+        )
+    }
+}
+
 @Preview
 @Composable
 fun InboxScreenPreview() {
@@ -161,5 +236,31 @@ fun TrashEntryComponentPreview() {
 fun InboxTopBarComponentPreview() {
     InboxTopBarComponent(
         onClickCompose = {}
+    )
+}
+
+@Preview
+@Composable
+fun MailItemComponentPreview() {
+    MailItemComponent(
+        mail = Mail(
+            uuid = "1",
+            account = "test",
+            sender = "sender",
+            senderAddress = "sender@test",
+            receiveTo = "test, test2",
+            receiveCc = "test3",
+            title = "测试标题",
+            content = "测试内容",
+            preview = "测试预览",
+            isRead = true,
+            hasAttachment = true,
+            type = MailType.INBOX,
+            attachmentDownloaded = false,
+            uid = 1,
+            time = 1668090507,
+        ),
+        onClick = {},
+        modifier = Modifier.fillMaxWidth()
     )
 }
