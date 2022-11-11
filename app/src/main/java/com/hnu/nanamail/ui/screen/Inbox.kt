@@ -2,17 +2,17 @@ package com.hnu.nanamail.ui.screen
 
 import android.app.Application
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,11 +21,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.hnu.nanamail.viewmodel.InboxViewModel
 import com.hnu.nanamail.R
 import com.hnu.nanamail.data.Mail
 import com.hnu.nanamail.data.MailType
 import com.hnu.nanamail.data.getTimeStr
+import com.hnu.nanamail.ui.component.DrawerComponent
+import com.hnu.nanamail.viewmodel.InboxViewModel
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +37,8 @@ fun InboxScreen(
     navController: NavController
 ) {
     val login = remember { mutableStateOf(true) }
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
     if (!viewModel.checkLogin()) {
         login.value = false
     }
@@ -57,32 +61,44 @@ fun InboxScreen(
     } else {
         viewModel.getMailList()
     }
-    Scaffold(
-        topBar = {
-            InboxTopBarComponent {
-                navController.navigate(NavItem.Compose.route)
-            }
-        },
+    ModalNavigationDrawer(
+        drawerContent = { DrawerComponent(navController = navController) },
+        drawerState = drawerState,
+        gesturesEnabled = false
     ) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .padding(it)
-                .verticalScroll(rememberScrollState()),
+        Scaffold(
+            topBar = {
+                InboxTopBarComponent(
+                    onClickCompose = {
+                        navController.navigate(NavItem.Compose.route)
+                    },
+                    onClickDrawer = {
+                        scope.launch { drawerState.open() }
+                    }
+                )
+            },
         ) {
-            TrashEntryComponent(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
+                    .padding(horizontal = 20.dp)
+                    .padding(it)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                navController.navigate("trash")
-            }
-            for (mail in viewModel.mailList) {
-                MailItemComponent(mail = mail) {
-                    navController.navigate("mail/${mail.uuid}")
+                TrashEntryComponent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                ) {
+                    navController.navigate("trash")
+                }
+                for (mail in viewModel.mailList) {
+                    MailItemComponent(mail = mail) {
+                        navController.navigate("mail/${mail.uuid}")
+                    }
                 }
             }
         }
+
     }
 }
 
@@ -127,6 +143,7 @@ fun TrashEntryComponent(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun InboxTopBarComponent(
+    onClickDrawer: () -> Unit,
     onClickCompose: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
@@ -150,7 +167,17 @@ fun InboxTopBarComponent(
             containerColor = MaterialTheme.colorScheme.surface,
             titleContentColor = MaterialTheme.colorScheme.primary,
             actionIconContentColor = MaterialTheme.colorScheme.primary,
-        )
+            navigationIconContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        navigationIcon = {
+            IconButton(onClick = { onClickDrawer() }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+        },
     )
 }
 
@@ -266,7 +293,8 @@ fun TrashEntryComponentPreview() {
 @Composable
 fun InboxTopBarComponentPreview() {
     InboxTopBarComponent(
-        onClickCompose = {}
+        onClickCompose = {},
+        onClickDrawer = {}
     )
 }
 
