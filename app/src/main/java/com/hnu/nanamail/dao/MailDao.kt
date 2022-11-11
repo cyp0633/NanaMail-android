@@ -10,7 +10,7 @@ import com.hnu.nanamail.data.Mail
 interface MailDao {
     // 向数据库插入多封邮件
     @Insert
-    fun insertMails(vararg mails: Mail)
+    fun insertMails(vararg mails: List<Mail>)
 
     // 删除数据库中的多封邮件
     @Delete

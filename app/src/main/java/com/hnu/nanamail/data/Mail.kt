@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.mail.Message
 
 @Entity
 data class Mail(
@@ -22,14 +23,14 @@ data class Mail(
     @ColumnInfo(name = "sender_address")
     val senderAddress: String,
     // 收件人邮箱，可能有多个
-    @ColumnInfo(name = "receive_to")
-    val receiveTo: String,
+    @ColumnInfo(name = "recipient_to")
+    val recipientTo: String,
     // 抄送人邮箱，可能有多个
-    @ColumnInfo(name = "receive_cc")
-    val receiveCc: String,
+    @ColumnInfo(name = "recipient_cc")
+    val recipientCc: String,
     // 邮件标题
-    @ColumnInfo(name = "title")
-    val title: String,
+    @ColumnInfo(name = "subject")
+    val subject: String,
     // 邮件内容
     @ColumnInfo(name = "content")
     val content: String,
@@ -45,7 +46,7 @@ data class Mail(
     // 附件是否已下载
     @ColumnInfo(name = "is_attachment_downloaded")
     val attachmentDownloaded: Boolean,
-    // uid
+    // uid，用于 JavaMail
     @ColumnInfo(name = "uid")
     val uid: Int,
     // 类型
@@ -54,9 +55,9 @@ data class Mail(
     // 时间
     @ColumnInfo(name = "time")
     val time: Long
-)
-
-fun Mail.getTimeStr(): String {
-    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("zh", "CN"))
-    return simpleDateFormat.format(Date(time * 1000))
+) {
+    fun getTimeStr(): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("zh", "CN"))
+        return simpleDateFormat.format(Date(time * 1000))
+    }
 }

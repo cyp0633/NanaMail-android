@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Mail
+import com.hnu.nanamail.data.Pop3Backend
 import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +28,11 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getMailList() {
         viewModelScope.launch(Dispatchers.IO) {
-            mailList = AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value).toMutableStateList()
+            val fetchList = Pop3Backend.fetchInbox()
+            AppDatabase.getDatabase(getApplication()).mailDao().insertMails(fetchList)
+            mailList =
+                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value)
+                    .toMutableStateList()
         }
     }
 }
