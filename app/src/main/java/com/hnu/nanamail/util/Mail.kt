@@ -1,5 +1,9 @@
 package com.hnu.nanamail.util
 
+import com.hnu.nanamail.data.Mail
+import com.hnu.nanamail.data.MailType
+import com.hnu.nanamail.data.Pop3Backend
+import java.util.*
 import javax.mail.Flags
 import javax.mail.Message
 import javax.mail.Multipart
@@ -70,4 +74,41 @@ fun parseRecipientCc(message: Message): String {
         }
     }
     return recipient.toString()
+}
+
+fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> {
+    val mailList = mutableListOf<Mail>()
+    for (m in msg) {
+        val isRead = isRead(m)
+        val hasAttachment = hasAttachment(m)
+        val content = parseContent(m)
+        // TODO: 解析图片
+        // 发送者和其邮箱
+        val fromAddress = (m.from[0] as InternetAddress).address
+        val from = (m.from[0] as InternetAddress).personal
+        val recipientTo = parseRecipientTo(m)
+        val recipientCc = parseRecipientCc(m)
+        val uid = m.messageNumber
+        val subject = m.subject
+        val preview = if (content.length > 100) content.substring(0, 100) else content
+        val mail = Mail(
+            uuid = UUID.randomUUID().toString(),
+            account = Pop3Backend.mailAddress,
+            sender = from,
+            senderAddress = fromAddress,
+            recipientTo = recipientTo,
+            recipientCc = recipientCc,
+            subject = subject,
+            content = content,
+            preview = preview,
+            isRead = isRead,
+            hasAttachment = hasAttachment,
+            attachmentDownloaded = false,
+            uid = uid,
+            type = mailType,
+            time = m.sentDate.time
+        )
+        mailList.plus(mail)
+    }
+    return mailList
 }

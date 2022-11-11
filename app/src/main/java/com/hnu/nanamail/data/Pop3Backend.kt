@@ -60,7 +60,6 @@ object Pop3Backend {
     fun fetchInbox(): List<Mail> {
         val store: Store
         val emailFolder: Folder
-        val mailList = listOf<Mail>()
         try {
             store = session.getStore("pop3")
             store.connect()
@@ -68,39 +67,7 @@ object Pop3Backend {
             emailFolder.open(Folder.READ_WRITE)
             val msg = emailFolder.messages
             // TODO: 改善拉取逻辑，不拉取存在的邮件并设置上限
-            for (m in msg) {
-                val isRead = isRead(m)
-                val hasAttachment = hasAttachment(m)
-                val content = parseContent(m)
-                // TODO: 解析图片
-                // 发送者和其邮箱
-                val fromAddress = (m.from[0] as InternetAddress).address
-                val from = (m.from[0] as InternetAddress).personal
-                val recipientTo = parseRecipientTo(m)
-                val recipientCc = parseRecipientCc(m)
-                val uid = m.messageNumber
-                val subject = m.subject
-                val preview = if (content.length > 100) content.substring(0, 100) else content
-                val mail = Mail(
-                    uuid = UUID.randomUUID().toString(),
-                    account = mailAddress,
-                    sender = from,
-                    senderAddress = fromAddress,
-                    recipientTo = recipientTo,
-                    recipientCc = recipientCc,
-                    subject = subject,
-                    content = content,
-                    preview = preview,
-                    isRead = isRead,
-                    hasAttachment = hasAttachment,
-                    attachmentDownloaded = false,
-                    uid = uid,
-                    type = MailType.INBOX,
-                    time = m.sentDate.time
-                )
-                mailList.plus(mail)
-            }
-            return mailList
+            return parseMessagesIntoMails(msg, MailType.INBOX)
         } catch (e: MessagingException) {
             Log.e("Pop3Backend", "MessagingException, ${e.message}")
             e.printStackTrace()
