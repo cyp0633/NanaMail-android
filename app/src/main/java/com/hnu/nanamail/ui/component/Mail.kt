@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.hnu.nanamail.R
 import com.hnu.nanamail.data.Mail
 import com.hnu.nanamail.data.MailType
-import com.hnu.nanamail.data.getTimeStr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +75,7 @@ fun MailItemComponent(
                     )
                 }
                 Text(
-                    text = mail.title,
+                    text = mail.subject,
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (mail.isRead) {
                         MaterialTheme.colorScheme.primary
@@ -115,9 +114,9 @@ fun MailItemComponentPreview() {
             account = "test",
             sender = "sender",
             senderAddress = "sender@test",
-            receiveTo = "test, test2",
-            receiveCc = "test3",
-            title = "测试标题",
+            recipientTo = "test, test2",
+            recipientCc = "test3",
+            subject = "测试标题",
             content = "测试内容",
             preview = "测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览",
             isRead = false,
@@ -141,9 +140,9 @@ fun ReadMailItemComponentPreview() {
             account = "test",
             sender = "sender",
             senderAddress = "sender@test",
-            receiveTo = "test, test2",
-            receiveCc = "test3",
-            title = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
+            recipientTo = "test, test2",
+            recipientCc = "test3",
+            subject = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
             content = "测试内容",
             preview = "测试预览",
             isRead = true,

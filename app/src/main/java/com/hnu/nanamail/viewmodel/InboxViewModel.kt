@@ -29,7 +29,8 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
     fun getMailList() {
         viewModelScope.launch(Dispatchers.IO) {
             val fetchList = Pop3Backend.fetchInbox()
-            AppDatabase.getDatabase(getApplication()).mailDao().insertMails(fetchList)
+            AppDatabase.getDatabase(getApplication()).mailDao()
+                .insertMails(*fetchList.toTypedArray())
             mailList =
                 AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value)
                     .toMutableStateList()
