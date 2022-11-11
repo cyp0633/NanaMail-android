@@ -2,7 +2,11 @@ package com.hnu.nanamail.ui.screen
 
 import android.app.Application
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -50,6 +54,8 @@ fun InboxScreen(
                 }
             }
         )
+    } else {
+        viewModel.getMailList()
     }
     Scaffold(
         topBar = {
@@ -62,6 +68,7 @@ fun InboxScreen(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(it)
+                .verticalScroll(rememberScrollState()),
         ) {
             TrashEntryComponent(
                 modifier = Modifier
@@ -69,6 +76,11 @@ fun InboxScreen(
                     .padding(vertical = 10.dp)
             ) {
                 navController.navigate("trash")
+            }
+            for (mail in viewModel.mailList) {
+                MailItemComponent(mail = mail) {
+                    navController.navigate("mail/${mail.uuid}")
+                }
             }
         }
     }
@@ -86,7 +98,7 @@ fun TrashEntryComponent(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.secondary,
         ),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         onClick = { onClick() }
@@ -186,7 +198,7 @@ fun MailItemComponent(
                                 painter = painterResource(id = R.drawable.attachment),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(15.dp)
+                                    .size(25.dp)
                                     .padding(horizontal = 3.dp),
                                 tint = MaterialTheme.colorScheme.secondary
                             )

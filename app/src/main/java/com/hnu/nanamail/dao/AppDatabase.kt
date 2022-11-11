@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.hnu.nanamail.data.Mail
 import com.hnu.nanamail.data.User
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Mail::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun mailDao(): MailDao
 
     companion object {
         @Volatile
