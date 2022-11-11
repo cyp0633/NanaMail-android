@@ -1,22 +1,16 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
-import com.sun.mail.util.MailSSLSocketFactory
-import java.util.Properties
-import javax.mail.AuthenticationFailedException
-import javax.mail.Authenticator
-import javax.mail.MessagingException
-import javax.mail.PasswordAuthentication
-import javax.mail.Session
-import javax.mail.Transport
+import java.util.*
+import javax.mail.*
 
-class SmtpBackend(
-    private var mailAddress: String,
-    private var password: String,
-    private var server: String,
-    private var encryptMethod: String,
-    private var portNumber: Int
-) {
+object SmtpBackend {
+    var mailAddress: String = ""
+    var password: String = ""
+    var server: String = ""
+    var encryptMethod: String = ""
+    var portNumber: Int = 0
+
     fun verify(): String {
         try {
             val props = Properties()

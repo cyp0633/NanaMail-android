@@ -6,18 +6,18 @@ import javax.mail.AuthenticationFailedException
 import javax.mail.MessagingException
 import javax.mail.Session
 
-class Pop3Backend(
-    var mailAddress: String,
-    var password: String,
-    var server: String,
-    var encryptMethod: String,
-    var portNumber: Int
-) {
+object Pop3Backend {
+    var mailAddress: String = ""
+    var password: String = ""
+    var server: String = ""
+    var encryptMethod: String = ""
+    var portNumber: Int = 0
+
     fun verify(): String {
         try {
             val props = Properties()
             props["mail.pop3.auth"] = "true"
-            when(encryptMethod) {
+            when (encryptMethod) {
                 "SSL" -> {
                     props["mail.pop3.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
                     props["mail.pop3.socketFactory.fallback"] = "false"
@@ -30,7 +30,7 @@ class Pop3Backend(
             }
             val session = Session.getInstance(props)
             val store = session.getStore("pop3")
-            store.connect(server,portNumber,mailAddress,password)
+            store.connect(server, portNumber, mailAddress, password)
             store.close()
             return "success"
         } catch (e: AuthenticationFailedException) {

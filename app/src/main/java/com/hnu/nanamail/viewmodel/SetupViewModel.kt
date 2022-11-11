@@ -36,28 +36,28 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
         if (mailAddress.value == "" || password.value == "" || pop3Server.value == "" || receiveEncryptMethod.value == "" || receivePortNumber.value == "" || smtpServer.value == "" || sendEncryptMethod.value == "" || sendPortNumber.value == "") {
             return "请填写完整信息"
         }
-        val smtpBackend = SmtpBackend(
-            mailAddress.value,
-            password.value,
-            smtpServer.value,
-            sendEncryptMethod.value,
-            sendPortNumber.value.toInt()
-        )
+
+        SmtpBackend.mailAddress = mailAddress.value
+        SmtpBackend.password = password.value
+        SmtpBackend.server = smtpServer.value
+        SmtpBackend.encryptMethod = sendEncryptMethod.value
+        SmtpBackend.portNumber = sendPortNumber.value.toInt()
+
         viewModelScope.launch(Dispatchers.IO) {
-            result = smtpBackend.verify()
+            result = SmtpBackend.verify()
         }
         if (result != "success") {
             return "SMTP 验证错误：$result"
         }
-        val pop3Backend = Pop3Backend(
-            mailAddress.value,
-            password.value,
-            pop3Server.value,
-            receiveEncryptMethod.value,
-            receivePortNumber.value.toInt()
-        )
+
+        Pop3Backend.mailAddress = mailAddress.value
+        Pop3Backend.password = password.value
+        Pop3Backend.server = pop3Server.value
+        Pop3Backend.encryptMethod = receiveEncryptMethod.value
+        Pop3Backend.portNumber = receivePortNumber.value.toInt()
+
         viewModelScope.launch(Dispatchers.IO) {
-            result = pop3Backend.verify()
+            result = Pop3Backend.verify()
         }
         if (result != "success") {
             return "POP3 验证错误：$result"
