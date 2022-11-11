@@ -62,7 +62,11 @@ fun InboxScreen(
         viewModel.getMailList()
     }
     ModalNavigationDrawer(
-        drawerContent = { DrawerComponent(navController = navController) },
+        drawerContent = { DrawerComponent(
+            navController = navController,
+            onClickClose = { scope.launch { drawerState.close() } },
+            selectedItem = NavItem.Inbox
+        ) },
         drawerState = drawerState,
         gesturesEnabled = false
     ) {
