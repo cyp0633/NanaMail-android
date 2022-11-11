@@ -1,6 +1,7 @@
 package com.hnu.nanamail.ui.screen
 
 import android.app.Application
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -36,9 +37,9 @@ fun NavScreen(application: Application) {
     }
 }
 
-sealed class NavItem(var route: String, var icon: ImageVector?, @StringRes val resourceId: Int) {
-    object Inbox: NavItem("inbox", Icons.Filled.Email, R.string.inbox)
-    object Sent: NavItem("sent", Icons.Filled.Email, R.string.sent)
-    object Compose: NavItem("compose", Icons.Filled.Email, R.string.compose_mail)
-    object Setup: NavItem("setup", Icons.Filled.Email, R.string.setup)
+sealed class NavItem(var route: String, @DrawableRes val iconRes: Int?, @StringRes val stringRes: Int) {
+    object Inbox: NavItem("inbox", R.drawable.inbox, R.string.inbox)
+    object Sent: NavItem("sent", R.drawable.outbox, R.string.sent)
+    object Compose: NavItem("compose", null, R.string.compose_mail)
+    object Setup: NavItem("setup", null, R.string.setup)
 }

@@ -35,9 +35,9 @@ fun InboxScreen(
     val login = remember { mutableStateOf(true) }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    if (!viewModel.checkLogin()) {
-        login.value = false
-    }
+//    if (!viewModel.checkLogin()) {
+//        login.value = false
+//    }
     if (!login.value) {
         AlertDialog(
             onDismissRequest = {
@@ -48,15 +48,15 @@ fun InboxScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-//                    navController.navigate(NavItem.Setup.route)
-                    login.value = true
+                    navController.navigate(NavItem.Setup.route)
+//                    login.value = true
                 }) {
                     Text(text = stringResource(id = R.string.confirm))
                 }
             }
         )
     } else {
-        viewModel.getMailList()
+//        viewModel.getMailList()
     }
     ModalNavigationDrawer(
         drawerContent = { DrawerComponent(
