@@ -1,16 +1,9 @@
 package com.hnu.nanamail.data
 
-import android.app.Application
 import android.util.Log
-import com.hnu.nanamail.dao.AppDatabase
-import com.hnu.nanamail.util.*
+import com.hnu.nanamail.util.parseMessagesIntoMails
 import java.util.*
-import javax.mail.AuthenticationFailedException
-import javax.mail.Folder
-import javax.mail.MessagingException
-import javax.mail.Session
-import javax.mail.Store
-import javax.mail.internet.InternetAddress
+import javax.mail.*
 
 object Pop3Backend {
     var mailAddress: String = ""
@@ -62,7 +55,7 @@ object Pop3Backend {
         val emailFolder: Folder
         try {
             store = session.getStore("pop3")
-            store.connect()
+            store.connect(server, portNumber, mailAddress, password)
             emailFolder = store.getFolder("INBOX")
             emailFolder.open(Folder.READ_WRITE)
             val msg = emailFolder.messages
