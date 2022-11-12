@@ -33,4 +33,7 @@
     <string name="mail_detail">Mail detail</string>
     <string name="mail_not_found">Mail not found</string>
     <string name="cant_find_mail_see_trash">Can\'t find your mail? See Trash</string>
+    <string name="expand_detail">Expand detail</string>
+    <string name="encryption">Encryption</string>
+    <string name="no_encryption">Not encrypted of course, not implemented</string>
 </resources>

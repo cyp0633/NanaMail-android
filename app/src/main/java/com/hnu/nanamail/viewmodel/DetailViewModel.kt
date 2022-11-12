@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
     val mail = mutableStateOf(Mail())
     val exist = mutableStateOf(true)
+    val expandMsgDetail = mutableStateOf(false)
 
     fun fetch(uuid: String): Mail {
         viewModelScope.launch {

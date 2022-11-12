@@ -1,11 +1,13 @@
 package com.hnu.nanamail.ui.screen
 
 import android.app.Application
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -81,13 +83,32 @@ fun DetailScreen(
                     color = MaterialTheme.colorScheme.secondary,
                 )
             }
-            // 收件人
-            Text(
-                text = stringResource(id = R.string.recipient_to) +": "+ mail.recipientTo,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary,
+            // 收件人和按钮
+            Row(
                 modifier = Modifier.padding(vertical = 10.dp),
-            )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.recipient_to) + ": " + mail.recipientTo,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                IconButton(
+                    onClick = {
+                        viewModel.expandMsgDetail.value = !viewModel.expandMsgDetail.value
+                    },
+                    modifier = Modifier.size(20.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.expand_more),
+                        contentDescription = stringResource(id = R.string.expand_detail),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+            if (viewModel.expandMsgDetail.value) {
+                CommunicationDetailComponent(mail = mail)
+            }
             Divider()
             // 正文
             Text(
@@ -144,6 +165,99 @@ fun DetailTopBar(
     )
 }
 
+@Composable
+fun CommunicationDetailComponent(
+    mail: Mail,
+) {
+    Card(
+        modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp),
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 5.dp),
+            ) {
+                // 发件人
+                Text(
+                    text = stringResource(id = R.string.sender),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+                // 收件人
+                Text(
+                    text = stringResource(id = R.string.recipient_to),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+                // 抄送
+                if (mail.recipientCc != "") {
+                    Text(
+                        text = stringResource(id = R.string.recipient_cc),
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(vertical = 5.dp)
+                    )
+                }
+                // 加密
+                Text(
+                    text = stringResource(id = R.string.encryption),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 5.dp),
+            ) {
+                // 发件人
+                Row {
+                    Text(
+                        text = mail.sender,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(vertical = 5.dp),
+                    )
+                    Text(
+                        text = " · " + mail.senderAddress,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(vertical = 5.dp),
+                    )
+                }
+                // 收件人
+                Text(
+                    text = mail.recipientTo,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp),
+                )
+                // 抄送
+                if (mail.recipientCc != "") {
+                    Text(
+                        text = mail.recipientCc,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(vertical = 5.dp),
+                    )
+                }
+                // 加密
+                Text(
+                    text = stringResource(id = R.string.no_encryption),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp),
+                )
+            }
+        }
+    }
+
+}
+
 @Preview
 @Composable
 fun DetailTopBarPreview() {
@@ -152,6 +266,23 @@ fun DetailTopBarPreview() {
             onClickBack = {},
             onClickUnread = {},
             onClickDelete = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CommunicationDetailComponentPreview() {
+    NanaMailTheme {
+        CommunicationDetailComponent(
+            mail = Mail(
+                subject = "测试标题",
+                content = "测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容",
+                sender = "测试发件人",
+                senderAddress = "test@testmail",
+                recipientTo = "test2@testmail",
+                recipientCc = "test3@testmail",
+            )
         )
     }
 }
@@ -167,7 +298,9 @@ fun DetailScreenPreview() {
                 subject = "测试标题",
                 content = "测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容",
                 sender = "测试发件人",
-                recipientTo = "测试收件人",
+                senderAddress = "test@testmail",
+                recipientTo = "test2@testmail",
+                recipientCc = "test3@testmail",
             )
         )
     }

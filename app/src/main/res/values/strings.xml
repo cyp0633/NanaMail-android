@@ -32,4 +32,7 @@
     <string name="mail_detail">邮件详情</string>
     <string name="mail_not_found">邮件不存在</string>
     <string name="cant_find_mail_see_trash">没有找到邮件？看看垃圾邮件</string>
+    <string name="expand_detail">查看细节</string>
+    <string name="encryption">加密</string>
+    <string name="no_encryption">当然没有加密，因为没做</string>
 </resources>
