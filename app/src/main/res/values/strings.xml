@@ -28,4 +28,5 @@
     <string name="recipient_bcc">密送</string>
     <string name="content">正文</string>
     <string name="subject">主题</string>
+    <string name="outbox">发件箱</string>
 </resources>

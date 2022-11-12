@@ -29,4 +29,5 @@
     <string name="recipient_bcc">Recipient Bcc</string>
     <string name="content">Content</string>
     <string name="subject">Subject</string>
+    <string name="outbox">Outbox</string>
 </resources>
