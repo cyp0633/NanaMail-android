@@ -172,7 +172,6 @@ fun ComposeScreen(
                     text = stringResource(id = R.string.subject),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 10.dp)
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 BasicTextField(
@@ -189,7 +188,8 @@ fun ComposeScreen(
             Text(
                 text = stringResource(id = R.string.content),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 10.dp)
             )
             BasicTextField(
                 modifier = Modifier
