@@ -64,6 +64,13 @@ fun NavScreen(application: Application) {
                 mail = mail
             )
         }
+        composable(NavItem.Trash.route) {
+            val viewModel = ViewModelProvider(it)[TrashViewModel::class.java]
+            TrashScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
     }
 }
 
@@ -78,4 +85,5 @@ sealed class NavItem(
     object Setup : NavItem("setup", null, R.string.setup)
     object Sent : NavItem("sent", R.drawable.send, R.string.sent)
     object Detail : NavItem("detail", null, R.string.mail_detail)
+    object Trash : NavItem("trash", R.drawable.unsubscribe, R.string.trash_mail)
 }

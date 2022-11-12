@@ -60,6 +60,7 @@ data class Mail(
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("zh", "CN"))
         return simpleDateFormat.format(Date(time * 1000))
     }
+
     override fun toString(): String {
         return "Mail(uuid='$uuid', account='$account', sender='$sender', senderAddress='$senderAddress', recipientTo='$recipientTo', recipientCc='$recipientCc', subject='$subject', content='$content', preview='$preview', isRead=$isRead, hasAttachment=$hasAttachment, attachmentDownloaded=$attachmentDownloaded, uid=$uid, type=$type, time=$time)"
     }

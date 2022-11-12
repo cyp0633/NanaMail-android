@@ -26,7 +26,8 @@ fun DrawerComponent(
     val drawerItems = listOf(
         NavItem.Inbox,
         NavItem.Outbox,
-        NavItem.Sent
+        NavItem.Sent,
+        NavItem.Trash,
     )
     ModalDrawerSheet(
         modifier = Modifier.widthIn(max = 250.dp),
@@ -75,7 +76,7 @@ fun DrawerComponent(
                                 saveState = true
                             }
                             launchSingleTop = true
-                            restoreState = true
+                            restoreState = false
                         }
                         onClickClose()
                     },
