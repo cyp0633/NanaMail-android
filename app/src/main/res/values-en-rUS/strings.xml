@@ -23,4 +23,10 @@
     <string name="trash_mail">Trash mail</string>
     <string name="no_login">Not logined</string>
     <string name="close">Close</string>
+    <string name="sender">Sender</string>
+    <string name="recipient_to">Recipient To</string>
+    <string name="recipient_cc">Recipient Cc</string>
+    <string name="recipient_bcc">Recipient Bcc</string>
+    <string name="content">Content</string>
+    <string name="subject">Subject</string>
 </resources>

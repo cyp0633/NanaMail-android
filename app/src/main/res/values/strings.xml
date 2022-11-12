@@ -22,4 +22,10 @@
     <string name="trash_mail">垃圾邮件</string>
     <string name="no_login">未登录</string>
     <string name="close">关闭</string>
+    <string name="sender">发件人</string>
+    <string name="recipient_to">收件人</string>
+    <string name="recipient_cc">抄送</string>
+    <string name="recipient_bcc">密送</string>
+    <string name="content">正文</string>
+    <string name="subject">主题</string>
 </resources>

@@ -13,6 +13,11 @@ import kotlinx.coroutines.launch
 class ComposeViewModel(application: Application): AndroidViewModel(application) {
     val showRecipientCc = mutableStateOf(false)
     val username = mutableStateOf("")
+    val recipient = mutableStateOf("")
+    val recipientCc = mutableStateOf("")
+    val recipientBcc = mutableStateOf("")
+    val subject = mutableStateOf("")
+    val content = mutableStateOf("")
 
     fun updateUser() {
         var user: User

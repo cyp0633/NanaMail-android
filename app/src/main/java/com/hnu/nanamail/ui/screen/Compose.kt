@@ -1,16 +1,18 @@
 package com.hnu.nanamail.ui.screen
 
 import android.app.Application
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,10 +40,168 @@ fun ComposeScreen(
                 }
             )
         }
-    ) {
+    ) { PaddingValues ->
         Column(
-            modifier = Modifier.padding(it)
-        ) {}
+            modifier = Modifier
+                .padding(PaddingValues)
+                .padding(horizontal = 20.dp)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            // 发件人
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.sender),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = viewModel.username.value,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Divider()
+            // 收件人 + 右侧展开按钮
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.recipient_to),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BasicTextField(
+                        value = viewModel.recipient.value,
+                        onValueChange = {
+                            viewModel.recipient.value = it
+                        },
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                    )
+                }
+                if (!viewModel.showRecipientCc.value) {
+                    IconButton(
+                        onClick = {
+                            viewModel.showRecipientCc.value = true
+                        },
+                        modifier = Modifier.size(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp),
+                        )
+                    }
+                }
+            }
+            Divider()
+            // 抄送人
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.recipient_cc),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                BasicTextField(
+                    value = viewModel.recipientCc.value,
+                    onValueChange = {
+                        viewModel.recipientCc.value = it
+                    },
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                )
+            }
+            Divider()
+            // 密送
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.recipient_bcc),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                BasicTextField(
+                    value = viewModel.recipientBcc.value,
+                    onValueChange = {
+                        viewModel.recipientBcc.value = it
+                    },
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                )
+            }
+            Divider()
+            // 主题
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.subject),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                BasicTextField(
+                    value = viewModel.subject.value,
+                    onValueChange = {
+                        viewModel.subject.value = it
+                    },
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                )
+            }
+            Divider()
+            // 正文
+            Text(
+                text = stringResource(id = R.string.content),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+            BasicTextField(
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth(),
+                value = viewModel.content.value,
+                onValueChange = {
+                    viewModel.content.value = it
+                },
+                textStyle = MaterialTheme.typography.bodyLarge,
+            )
+        }
     }
 }
 
