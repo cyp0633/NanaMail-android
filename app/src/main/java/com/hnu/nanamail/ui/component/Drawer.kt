@@ -26,8 +26,11 @@ fun DrawerComponent(
     val drawerItems = listOf(
         NavItem.Inbox,
         NavItem.Outbox,
+        NavItem.Sent
     )
-    ModalDrawerSheet() {
+    ModalDrawerSheet(
+        modifier = Modifier.widthIn(max = 250.dp),
+    ) {
         Column(
             modifier = Modifier.padding(horizontal = 20.dp)
         ) {

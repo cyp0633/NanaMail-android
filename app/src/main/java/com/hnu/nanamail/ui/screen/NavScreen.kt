@@ -46,6 +46,13 @@ fun NavScreen(application: Application) {
                 viewModel = viewModel
             )
         }
+        composable(NavItem.Sent.route) {
+            val viewModel = ViewModelProvider(it)[OutboxViewModel::class.java]
+            SentScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
     }
 }
 
@@ -55,7 +62,8 @@ sealed class NavItem(
     @StringRes val stringRes: Int
 ) {
     object Inbox : NavItem("inbox", R.drawable.inbox, R.string.inbox)
-    object Outbox : NavItem("sent", R.drawable.outbox, R.string.sent)
+    object Outbox : NavItem("outbox", R.drawable.outbox, R.string.outbox)
     object Compose : NavItem("compose", R.drawable.edit, R.string.compose_mail)
     object Setup : NavItem("setup", null, R.string.setup)
+    object Sent : NavItem("sent", R.drawable.send, R.string.sent)
 }
