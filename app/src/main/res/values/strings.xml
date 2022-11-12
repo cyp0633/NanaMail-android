@@ -31,4 +31,5 @@
     <string name="outbox">发件箱</string>
     <string name="mail_detail">邮件详情</string>
     <string name="mail_not_found">邮件不存在</string>
+    <string name="cant_find_mail_see_trash">没有找到邮件？看看垃圾邮件</string>
 </resources>

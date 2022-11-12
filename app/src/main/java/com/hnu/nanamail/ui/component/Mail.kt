@@ -101,58 +101,56 @@ fun MailItemComponent(
         Divider(
             color = MaterialTheme.colorScheme.primary,
             thickness = 1.dp,
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
     }
-}
-
-@Preview(name = "未读邮件")
-@Composable
-fun MailItemComponentPreview() {
-    MailItemComponent(
-        mail = Mail(
-            uuid = "1",
-            account = "test",
-            sender = "sender",
-            senderAddress = "sender@test",
-            recipientTo = "test, test2",
-            recipientCc = "test3",
-            subject = "测试标题",
-            content = "测试内容",
-            preview = "测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览",
-            isRead = false,
-            hasAttachment = true,
-            type = MailType.INBOX,
-            attachmentDownloaded = false,
-            uid = 1,
-            time = 1668090507,
-        ),
-        onClick = {},
-        modifier = Modifier.fillMaxWidth()
-    )
 }
 
 @Preview(name = "已读邮件")
 @Composable
 fun ReadMailItemComponentPreview() {
-    MailItemComponent(
-        mail = Mail(
-            uuid = "1",
-            account = "test",
-            sender = "sender",
-            senderAddress = "sender@test",
-            recipientTo = "test, test2",
-            recipientCc = "test3",
-            subject = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
-            content = "测试内容",
-            preview = "测试预览",
-            isRead = true,
-            hasAttachment = false,
-            type = MailType.INBOX,
-            attachmentDownloaded = false,
-            uid = 1,
-            time = 1668090507,
-        ),
-        onClick = {},
-        modifier = Modifier.fillMaxWidth()
-    )
+    Column {
+        MailItemComponent(
+            mail = Mail(
+                uuid = "1",
+                account = "test",
+                sender = "sender",
+                senderAddress = "sender@test",
+                recipientTo = "test, test2",
+                recipientCc = "test3",
+                subject = "测试标题",
+                content = "测试内容",
+                preview = "测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览",
+                isRead = false,
+                hasAttachment = true,
+                type = MailType.INBOX,
+                attachmentDownloaded = false,
+                uid = 1,
+                time = 1668090507,
+            ),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+        MailItemComponent(
+            mail = Mail(
+                uuid = "1",
+                account = "test",
+                sender = "sender",
+                senderAddress = "sender@test",
+                recipientTo = "test, test2",
+                recipientCc = "test3",
+                subject = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
+                content = "测试内容",
+                preview = "测试预览",
+                isRead = true,
+                hasAttachment = false,
+                type = MailType.INBOX,
+                attachmentDownloaded = false,
+                uid = 1,
+                time = 1668090507,
+            ),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }

@@ -131,7 +131,7 @@ fun TrashEntryComponent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = stringResource(id = R.string.trash_mail),
+                text = stringResource(id = R.string.cant_find_mail_see_trash),
                 modifier = Modifier,
                 style = MaterialTheme.typography.titleMedium,
             )
