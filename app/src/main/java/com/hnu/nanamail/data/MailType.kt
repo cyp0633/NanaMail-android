@@ -9,4 +9,6 @@ enum class MailType {
     DRAFT,
     // 垃圾邮件
     TRASH,
+    // 发送中
+    OUTBOX
 }

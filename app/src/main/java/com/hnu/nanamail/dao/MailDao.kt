@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.hnu.nanamail.data.Mail
+import com.hnu.nanamail.data.MailType
 
 @Dao
 interface MailDao {
@@ -21,6 +22,6 @@ interface MailDao {
     fun getMail(uuid: String): Mail?
 
     // 分页获取邮件，每页 10 封
-    @Query("SELECT * FROM mail ORDER BY time DESC LIMIT :page, 10")
-    fun getMailListByPage(page: Int): List<Mail>
+    @Query("SELECT * FROM mail WHERE type = :type ORDER BY time DESC LIMIT :page, 10")
+    fun getMailListByPage(page: Int, type: MailType): List<Mail>
 }

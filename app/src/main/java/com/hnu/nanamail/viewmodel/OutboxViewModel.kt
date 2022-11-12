@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Mail
+import com.hnu.nanamail.data.MailType
 import com.hnu.nanamail.data.Pop3Backend
 import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,10 @@ class OutboxViewModel(application: Application) : AndroidViewModel(application) 
             AppDatabase.getDatabase(getApplication()).mailDao()
                 .insertMails(*fetchList.toTypedArray())
             mailList =
-                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value)
+                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(
+                    page.value,
+                    MailType.OUTBOX
+                )
                     .toMutableStateList()
         }
     }
