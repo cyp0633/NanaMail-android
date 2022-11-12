@@ -29,4 +29,6 @@
     <string name="content">正文</string>
     <string name="subject">主题</string>
     <string name="outbox">发件箱</string>
+    <string name="mail_detail">邮件详情</string>
+    <string name="mail_not_found">邮件不存在</string>
 </resources>

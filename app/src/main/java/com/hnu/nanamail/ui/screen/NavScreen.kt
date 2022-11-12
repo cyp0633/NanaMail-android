@@ -5,14 +5,13 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.hnu.nanamail.R
-import com.hnu.nanamail.viewmodel.ComposeViewModel
-import com.hnu.nanamail.viewmodel.InboxViewModel
-import com.hnu.nanamail.viewmodel.OutboxViewModel
-import com.hnu.nanamail.viewmodel.SetupViewModel
+import com.hnu.nanamail.viewmodel.*
 
 @Composable
 fun NavScreen(application: Application) {
@@ -53,6 +52,18 @@ fun NavScreen(application: Application) {
                 viewModel = viewModel
             )
         }
+        composable(
+            NavItem.Detail.route + "/{uuid}",
+            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+        ) {
+            val viewModel = ViewModelProvider(it)[DetailViewModel::class.java]
+            val mail = viewModel.fetch(it.arguments?.getString("uuid")!!)
+            DetailScreen(
+                navController = navController,
+                viewModel = viewModel,
+                mail = mail
+            )
+        }
     }
 }
 
@@ -66,4 +77,5 @@ sealed class NavItem(
     object Compose : NavItem("compose", R.drawable.edit, R.string.compose_mail)
     object Setup : NavItem("setup", null, R.string.setup)
     object Sent : NavItem("sent", R.drawable.send, R.string.sent)
+    object Detail : NavItem("detail", null, R.string.mail_detail)
 }

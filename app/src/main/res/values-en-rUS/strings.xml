@@ -30,4 +30,6 @@
     <string name="content">Content</string>
     <string name="subject">Subject</string>
     <string name="outbox">Outbox</string>
+    <string name="mail_detail">Mail detail</string>
+    <string name="mail_not_found">Mail not found</string>
 </resources>
