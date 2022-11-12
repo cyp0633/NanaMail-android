@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
+import com.hnu.nanamail.data.SmtpBackend
 import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,5 +27,16 @@ class ComposeViewModel(application: Application): AndroidViewModel(application) 
             username.value = user.mailAddress
         }
     }
-    fun sendMail() {}
+    fun sendMail() {
+        viewModelScope.launch(Dispatchers.IO) {
+            SmtpBackend.sendMail(
+                username.value,
+                recipient.value,
+                recipientCc.value,
+                recipientBcc.value,
+                subject.value,
+                content.value
+            )
+        }
+    }
 }

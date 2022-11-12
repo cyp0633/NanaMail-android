@@ -37,6 +37,7 @@ fun ComposeScreen(
                 },
                 onClickSend = {
                     viewModel.sendMail()
+                    navController.popBackStack()
                 }
             )
         }
@@ -112,7 +113,7 @@ fun ComposeScreen(
                 }
             }
             Divider()
-            if(viewModel.showRecipientCc.value) {
+            if (viewModel.showRecipientCc.value) {
                 // 抄送人
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
