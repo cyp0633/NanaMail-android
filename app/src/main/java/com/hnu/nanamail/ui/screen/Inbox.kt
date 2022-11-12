@@ -8,10 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -57,14 +54,18 @@ fun InboxScreen(
             }
         )
     } else {
-//        viewModel.getMailList()
+        LaunchedEffect(true) {
+            viewModel.getMailList()
+        }
     }
     ModalNavigationDrawer(
-        drawerContent = { DrawerComponent(
-            navController = navController,
-            onClickClose = { scope.launch { drawerState.close() } },
-            selectedItem = NavItem.Inbox
-        ) },
+        drawerContent = {
+            DrawerComponent(
+                navController = navController,
+                onClickClose = { scope.launch { drawerState.close() } },
+                selectedItem = NavItem.Inbox
+            )
+        },
         drawerState = drawerState,
         gesturesEnabled = false
     ) {

@@ -52,7 +52,9 @@ fun OutboxScreen(
             }
         )
     } else {
-//        viewModel.getMailList()
+        LaunchedEffect(true) {
+            viewModel.getMailList()
+        }
     }
     ModalNavigationDrawer(
         drawerContent = {
