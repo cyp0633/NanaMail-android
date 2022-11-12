@@ -112,54 +112,58 @@ fun ComposeScreen(
                 }
             }
             Divider()
-            // 抄送人
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(id = R.string.recipient_cc),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                BasicTextField(
-                    value = viewModel.recipientCc.value,
-                    onValueChange = {
-                        viewModel.recipientCc.value = it
-                    },
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1,
-                )
+            if(viewModel.showRecipientCc.value) {
+                // 抄送人
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.recipient_cc),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BasicTextField(
+                        value = viewModel.recipientCc.value,
+                        onValueChange = {
+                            viewModel.recipientCc.value = it
+                        },
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Divider()
+                // 密送
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.recipient_bcc),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BasicTextField(
+                        value = viewModel.recipientBcc.value,
+                        onValueChange = {
+                            viewModel.recipientBcc.value = it
+                        },
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Divider()
             }
-            Divider()
-            // 密送
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(id = R.string.recipient_bcc),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                BasicTextField(
-                    value = viewModel.recipientBcc.value,
-                    onValueChange = {
-                        viewModel.recipientBcc.value = it
-                    },
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1,
-                )
-            }
-            Divider()
             // 主题
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -181,6 +185,7 @@ fun ComposeScreen(
                     },
                     textStyle = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Divider()
@@ -194,7 +199,7 @@ fun ComposeScreen(
             BasicTextField(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 value = viewModel.content.value,
                 onValueChange = {
                     viewModel.content.value = it
