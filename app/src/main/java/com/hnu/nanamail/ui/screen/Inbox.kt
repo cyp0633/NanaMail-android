@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
+import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.InboxViewModel
 import kotlinx.coroutines.launch
 
@@ -69,13 +70,14 @@ fun InboxScreen(
     ) {
         Scaffold(
             topBar = {
-                InboxTopBarComponent(
+                MainTopBarComponent(
                     onClickCompose = {
                         navController.navigate(NavItem.Compose.route)
                     },
                     onClickDrawer = {
                         scope.launch { drawerState.open() }
-                    }
+                    },
+                    text = stringResource(id = R.string.inbox)
                 )
             },
         ) {
@@ -141,46 +143,6 @@ fun TrashEntryComponent(
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun InboxTopBarComponent(
-    onClickDrawer: () -> Unit,
-    onClickCompose: () -> Unit,
-) {
-    CenterAlignedTopAppBar(
-        modifier = Modifier.statusBarsPadding(),
-        title = {
-            Text(
-                text = stringResource(id = R.string.inbox),
-                style = MaterialTheme.typography.titleLarge,
-            )
-        },
-        actions = {
-            IconButton(onClick = { onClickCompose() }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.primary,
-            actionIconContentColor = MaterialTheme.colorScheme.primary,
-            navigationIconContentColor = MaterialTheme.colorScheme.primary,
-        ),
-        navigationIcon = {
-            IconButton(onClick = { onClickDrawer() }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = null,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        },
-    )
-}
 
 @Preview
 @Composable
@@ -199,11 +161,3 @@ fun TrashEntryComponentPreview() {
     )
 }
 
-@Preview
-@Composable
-fun InboxTopBarComponentPreview() {
-    InboxTopBarComponent(
-        onClickCompose = {},
-        onClickDrawer = {}
-    )
-}
