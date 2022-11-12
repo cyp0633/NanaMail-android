@@ -65,7 +65,7 @@ fun parseRecipientTo(message: Message): String {
 
 // 解析抄送人
 fun parseRecipientCc(message: Message): String {
-    val recipients = message.getRecipients(Message.RecipientType.CC)
+    val recipients = message.getRecipients(Message.RecipientType.CC) ?: return "" // 可能没有抄送人
     val recipient = StringBuilder()
     for (i in recipients.indices) {
         recipient.append((recipients[i] as InternetAddress).address)
@@ -77,11 +77,12 @@ fun parseRecipientCc(message: Message): String {
 }
 
 fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> {
-    val mailList = mutableListOf<Mail>()
+    var mailList = mutableListOf<Mail>()
     for (m in msg) {
         val isRead = isRead(m)
         val hasAttachment = hasAttachment(m)
-        val content = parseContent(m)
+//        val content = parseContent(m)
+        val content = "test"
         // TODO: 解析图片
         // 发送者和其邮箱
         val fromAddress = (m.from[0] as InternetAddress).address
@@ -108,7 +109,7 @@ fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> 
             type = mailType,
             time = m.sentDate.time
         )
-        mailList.plus(mail)
+        mailList = mailList.plus(mail) as MutableList<Mail>
     }
     return mailList
 }

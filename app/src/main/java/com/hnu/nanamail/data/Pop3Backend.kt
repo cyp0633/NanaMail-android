@@ -16,20 +16,19 @@ object Pop3Backend {
 
     fun verify(): String {
         try {
-//            val props = Properties()
+            props["mail.store.protocol"] = "pop3"
             props["mail.pop3.auth"] = "true"
-            when (encryptMethod) {
-                "SSL" -> {
-                    props["mail.pop3.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
-                    props["mail.pop3.socketFactory.fallback"] = "false"
-                    props["mail.pop3.socketFactory.port"] = portNumber
-                }
-                "TLS" -> {
-                    props["mail.pop3.starttls.enable"] = "true"
-                    props["mail.pop3.starttls.required"] = "true"
+            props["mail.pop3.host"] = server
+            props["mail.pop3.port"] = portNumber
+            if(encryptMethod != "") {
+                props["mail.pop3.starttls.enable"] = "true"
+            }
+            val auth = object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(SmtpBackend.mailAddress, SmtpBackend.password)
                 }
             }
-            session = Session.getInstance(props)
+            session = Session.getInstance(props, auth)
             val store = session.getStore("pop3")
             store.connect(server, portNumber, mailAddress, password)
             store.close()
@@ -55,12 +54,15 @@ object Pop3Backend {
         val emailFolder: Folder
         try {
             store = session.getStore("pop3")
-            store.connect(server, portNumber, mailAddress, password)
+            store.connect(mailAddress, password)
             emailFolder = store.getFolder("INBOX")
             emailFolder.open(Folder.READ_WRITE)
             val msg = emailFolder.messages
             // TODO: 改善拉取逻辑，不拉取存在的邮件并设置上限
-            return parseMessagesIntoMails(msg, MailType.INBOX)
+            val mailList = parseMessagesIntoMails(msg, MailType.INBOX)
+            emailFolder.close(false) // 关闭邮件夹，但不删除邮件
+            store.close()
+            return mailList
         } catch (e: MessagingException) {
             Log.e("Pop3Backend", "MessagingException, ${e.message}")
             e.printStackTrace()
