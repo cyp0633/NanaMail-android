@@ -39,8 +39,7 @@ fun InboxScreen(
     var refreshing by remember { mutableStateOf(false) }
     fun refresh() = refreshScope.launch {
         refreshing = true
-//        viewModel.fetchMails()
-        delay(5000)
+        viewModel.fetchMail()
         refreshing = false
     }
 

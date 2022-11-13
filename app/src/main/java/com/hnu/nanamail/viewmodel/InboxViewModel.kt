@@ -27,7 +27,17 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
         return user != null
     }
 
+    // 从数据库中获取邮件（不联网）
     fun getMailList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            mailList =
+                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value,MailType.INBOX)
+                    .toMutableStateList()
+        }
+    }
+
+    // 从远程收件箱获取邮件
+    fun fetchMail() {
         viewModelScope.launch(Dispatchers.IO) {
             val fetchList = Pop3Backend.fetchInbox()
             AppDatabase.getDatabase(getApplication()).mailDao()
@@ -36,5 +46,6 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
                 AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value,MailType.INBOX)
                     .toMutableStateList()
         }
+
     }
 }
