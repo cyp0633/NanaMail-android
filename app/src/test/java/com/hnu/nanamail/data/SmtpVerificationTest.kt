@@ -4,11 +4,11 @@ import org.junit.Test
 
 
 @Test
-fun main() {
+suspend fun main() {
     val smtpBackend = SmtpBackend
     smtpBackend.mailAddress = "test@testmail"
     smtpBackend.password = "test"
-    smtpBackend.server = "code.internal.cyp0633.icu"
+    smtpBackend.server = "10.0.0.192"
     smtpBackend.encryptMethod = ""
     smtpBackend.portNumber = 3025
     println(smtpBackend.verify())

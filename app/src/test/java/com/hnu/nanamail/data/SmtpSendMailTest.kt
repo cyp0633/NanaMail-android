@@ -1,6 +1,6 @@
 package com.hnu.nanamail.data
 
-fun main() {
+suspend fun main() {
     SmtpBackend.mailAddress = "test@testmail"
     SmtpBackend.password = "test"
     SmtpBackend.server = "code.internal.cyp0633.icu"
