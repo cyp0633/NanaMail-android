@@ -13,7 +13,7 @@ import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SentViewModel(application: Application): AndroidViewModel(application) {
+class SentViewModel(application: Application) : AndroidViewModel(application) {
     var mailList = mutableListOf<Mail>()
     val page = mutableStateOf(1)
 
@@ -24,16 +24,25 @@ class SentViewModel(application: Application): AndroidViewModel(application) {
         return User.currentUser != null
     }
 
+    // 从数据库中获取邮件（不联网）
     fun getMailList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            mailList =
+                AppDatabase.getDatabase(getApplication()).mailDao()
+                    .getMailListByPage(page.value, MailType.SENT)
+                    .toMutableStateList()
+        }
+    }
+
+    // 从远程收件箱获取邮件
+    fun fetchMail() {
         viewModelScope.launch(Dispatchers.IO) {
             val fetchList = Pop3Backend.fetchInbox()
             AppDatabase.getDatabase(getApplication()).mailDao()
                 .insertMails(*fetchList.toTypedArray())
             mailList =
-                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(
-                    page.value,
-                    MailType.SENT
-                )
+                AppDatabase.getDatabase(getApplication()).mailDao()
+                    .getMailListByPage(page.value, MailType.SENT)
                     .toMutableStateList()
         }
     }

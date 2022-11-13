@@ -46,6 +46,5 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
                     .getMailListByPage(page.value, MailType.INBOX)
                     .toMutableStateList()
         }
-
     }
 }

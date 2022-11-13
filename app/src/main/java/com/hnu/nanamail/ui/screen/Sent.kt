@@ -1,11 +1,15 @@
 package com.hnu.nanamail.ui.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -15,19 +19,30 @@ import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.OutboxViewModel
+import com.hnu.nanamail.viewmodel.SentViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun SentScreen(
     navController: NavHostController,
-    viewModel: OutboxViewModel
+    viewModel: SentViewModel
 ) {
     val login = remember {
         mutableStateOf(true)
     }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val refreshScope = rememberCoroutineScope()
+    var refreshing by remember { mutableStateOf(false) }
+    fun refresh() = refreshScope.launch {
+        refreshing = true
+        viewModel.fetchMail()
+        refreshing = false
+    }
+
+    val refreshState = rememberPullRefreshState(refreshing, ::refresh)
+
 //    if (User.currentUser == null) {
 //        login.value = viewModel.checkLogin()
 //    }
@@ -77,17 +92,32 @@ fun SentScreen(
                 )
             },
         ) { PaddingValues ->
-            Column(
+            Box(
                 modifier = Modifier
                     .padding(PaddingValues)
-                    .padding(horizontal = 20.dp)
-                    .verticalScroll(rememberScrollState())
+                    .pullRefresh(refreshState)
+                    .fillMaxSize()
             ) {
-                for (mail in viewModel.mailList) {
-                    MailItemComponent(mail = mail) {
-                        navController.navigate("mail/${mail.uuid}")
+                Column(
+                    modifier = Modifier
+                        .padding()
+                        .padding(horizontal = 20.dp)
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxSize()
+                        .heightIn(min = 300.dp)
+                ) {
+                    for (mail in viewModel.mailList) {
+                        MailItemComponent(mail = mail) {
+                            navController.navigate("mail/${mail.uuid}")
+                        }
                     }
                 }
+                PullRefreshIndicator(
+                    refreshing = refreshing,
+                    state = refreshState,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }

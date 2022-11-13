@@ -46,7 +46,7 @@ fun NavScreen(application: Application) {
             )
         }
         composable(NavItem.Sent.route) {
-            val viewModel = ViewModelProvider(it)[OutboxViewModel::class.java]
+            val viewModel = ViewModelProvider(it)[SentViewModel::class.java]
             SentScreen(
                 navController = navController,
                 viewModel = viewModel
