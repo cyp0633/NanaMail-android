@@ -17,21 +17,20 @@ import kotlinx.coroutines.launch
 class InboxViewModel(application: Application) : AndroidViewModel(application) {
     var mailList = mutableStateListOf<Mail>()
     val page = mutableStateOf(1)
-//    val db = AppDatabase.getDatabase(getApplication())
 
     fun checkLogin(): Boolean {
-        var user: User? = null
         viewModelScope.launch(Dispatchers.IO) {
-            user = AppDatabase.getDatabase(getApplication()).userDao().getUser()
+            User.currentUser = AppDatabase.getDatabase(getApplication()).userDao().getUser()
         }
-        return user != null
+        return User.currentUser != null
     }
 
     // 从数据库中获取邮件（不联网）
     fun getMailList() {
         viewModelScope.launch(Dispatchers.IO) {
             mailList =
-                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value,MailType.INBOX)
+                AppDatabase.getDatabase(getApplication()).mailDao()
+                    .getMailListByPage(page.value, MailType.INBOX)
                     .toMutableStateList()
         }
     }
@@ -43,7 +42,8 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
             AppDatabase.getDatabase(getApplication()).mailDao()
                 .insertMails(*fetchList.toTypedArray())
             mailList =
-                AppDatabase.getDatabase(getApplication()).mailDao().getMailListByPage(page.value,MailType.INBOX)
+                AppDatabase.getDatabase(getApplication()).mailDao()
+                    .getMailListByPage(page.value, MailType.INBOX)
                     .toMutableStateList()
         }
 

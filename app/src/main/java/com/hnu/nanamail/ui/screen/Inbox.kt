@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import com.hnu.nanamail.data.User
 import kotlinx.coroutines.delay
 
 
@@ -44,8 +45,8 @@ fun InboxScreen(
     }
 
     val refreshState = rememberPullRefreshState(refreshing, ::refresh)
-//    if (!viewModel.checkLogin()) {
-//        login.value = false
+//    if (User.currentUser == null) {
+//        login.value = viewModel.checkLogin()
 //    }
     if (!login.value) {
         AlertDialog(

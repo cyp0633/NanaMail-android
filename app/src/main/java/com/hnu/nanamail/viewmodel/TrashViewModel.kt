@@ -19,11 +19,10 @@ class TrashViewModel (application: Application):AndroidViewModel(application) {
     val page = mutableStateOf(1)
 
     fun checkLogin(): Boolean {
-        var user: User? = null
         viewModelScope.launch(Dispatchers.IO) {
-            user = AppDatabase.getDatabase(getApplication()).userDao().getUser()
+            User.currentUser = AppDatabase.getDatabase(getApplication()).userDao().getUser()
         }
-        return user != null
+        return User.currentUser != null
     }
 
     fun getMailList() {

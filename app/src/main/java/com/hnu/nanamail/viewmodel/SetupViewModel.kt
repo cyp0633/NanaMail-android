@@ -68,18 +68,18 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
         if (existUser != null) {
             db.userDao().deleteUser(existUser)
         }
-        db.userDao().insertUser(
-            User(
-                mailAddress.value,
-                password.value,
-                pop3Server.value,
-                receiveEncryptMethod.value,
-                receivePortNumber.value.toInt(),
-                smtpServer.value,
-                sendEncryptMethod.value,
-                sendPortNumber.value.toInt()
-            )
+        val user = User(
+            mailAddress.value,
+            password.value,
+            pop3Server.value,
+            receiveEncryptMethod.value,
+            receivePortNumber.value.toInt(),
+            smtpServer.value,
+            sendEncryptMethod.value,
+            sendPortNumber.value.toInt()
         )
+        db.userDao().insertUser(user)
+        User.currentUser = user
         return "success"
     }
 }

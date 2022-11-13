@@ -23,4 +23,8 @@ data class User(
     val sendEncryptMethod: String,
     @ColumnInfo(name = "send_port_number")
     val sendPortNumber: Int
-)
+) {
+    companion object {
+        var currentUser: User? = null
+    }
+}

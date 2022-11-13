@@ -28,8 +28,8 @@ fun SentScreen(
     }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-//    if(!viewModel.checkLogin()) {
-//        login.value = false
+//    if (User.currentUser == null) {
+//        login.value = viewModel.checkLogin()
 //    }
     if (!login.value) {
         AlertDialog(
