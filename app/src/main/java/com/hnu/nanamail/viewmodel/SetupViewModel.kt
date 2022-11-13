@@ -3,7 +3,6 @@ package com.hnu.nanamail.viewmodel
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Pop3Backend
@@ -11,6 +10,7 @@ import com.hnu.nanamail.data.SmtpBackend
 import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SetupViewModel(application: Application) : AndroidViewModel(application) {
     // 输入框内容
@@ -28,13 +28,17 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
 
     // 提示框内容
     var showDialog = mutableStateOf(false)
-    var onDismissRequest = {}
     var dialogText = ""
+    private var result = ""
+    var proceed = mutableStateOf(false) // 验证成功，可以前往下一步
 
-    fun verify(): String {
-        var result = ""
-        if (mailAddress.value == "" || password.value == "" || pop3Server.value == "" || receiveEncryptMethod.value == "" || receivePortNumber.value == "" || smtpServer.value == "" || sendEncryptMethod.value == "" || sendPortNumber.value == "") {
-            return "请填写完整信息"
+    fun verify() {
+        dialogText = ""
+        if (mailAddress.value == "" || password.value == "" || pop3Server.value == "" || receivePortNumber.value == "" || smtpServer.value == "" || sendPortNumber.value == "") {
+            dialogText = "请填写完整信息"
+            proceed.value = false
+            showDialog.value = true
+            return
         }
 
         SmtpBackend.mailAddress = mailAddress.value
@@ -43,11 +47,11 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
         SmtpBackend.encryptMethod = sendEncryptMethod.value
         SmtpBackend.portNumber = sendPortNumber.value.toInt()
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             result = SmtpBackend.verify()
         }
         if (result != "success") {
-            return "SMTP 验证错误：$result"
+            dialogText = "SMTP 验证错误：$result"
         }
 
         Pop3Backend.mailAddress = mailAddress.value
@@ -56,18 +60,21 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
         Pop3Backend.encryptMethod = receiveEncryptMethod.value
         Pop3Backend.portNumber = receivePortNumber.value.toInt()
 
-        viewModelScope.launch(Dispatchers.IO) {
-            result = Pop3Backend.verify()
+        viewModelScope.launch { result = Pop3Backend.verify() }
+        if (dialogText != "") { // 上面还有错误的话就换行
+            dialogText = dialogText.plus("\n")
         }
-        if (result != "success") {
-            return "POP3 验证错误：$result"
+        if (result != "success") { // 接上 POP3 的错误
+            dialogText = dialogText.plus("POP3 验证错误：$result")
+        }
+
+        // 有错误的话就不再进行数据库访问了
+        if (dialogText != "") {
+            proceed.value = false
+            showDialog.value = true
+            return
         }
         // 保存用户信息，目前只有一个用户，所以把以前的先删掉
-        val db = AppDatabase.getDatabase(getApplication())
-        val existUser = db.userDao().getUser()
-        if (existUser != null) {
-            db.userDao().deleteUser(existUser)
-        }
         val user = User(
             mailAddress.value,
             password.value,
@@ -78,8 +85,21 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
             sendEncryptMethod.value,
             sendPortNumber.value.toInt()
         )
-        db.userDao().insertUser(user)
+        viewModelScope.launch {
+            replaceNewUser(user)
+        }
         User.currentUser = user
-        return "success"
+        dialogText = "验证成功"
+        proceed.value = true
+        showDialog.value = true
+    }
+
+    private suspend fun replaceNewUser(user: User) = withContext(Dispatchers.IO) {
+        val db = AppDatabase.getDatabase(getApplication())
+        val existUser = db.userDao().getUser()
+        if (existUser != null) {
+            db.userDao().deleteUser(existUser)
+        }
+        db.userDao().insertUser(user)
     }
 }

@@ -9,12 +9,12 @@
     <string name="mail_address">Email address</string>
     <string name="password">Password</string>
     <string name="basic_account_info">Basic account info</string>
-    <string name="receive_server_info">Receiving server info</string>
+    <string name="receive_server_info">Receiving server info (POP3)</string>
     <string name="pop3_server">POP3 server address</string>
     <string name="receive_encrypt_method">Receiving encryption method</string>
     <string name="receive_port_number">Receiving port number</string>
     <string name="receive_username">Receiving username</string>
-    <string name="send_server_info">Sending server information</string>
+    <string name="send_server_info">Sending server information (SMTP)</string>
     <string name="smtp_server">SMTP server address</string>
     <string name="send_encrypt_method">Sending encryption method</string>
     <string name="send_port_number">Sending server port number</string>
@@ -36,4 +36,5 @@
     <string name="expand_detail">Expand detail</string>
     <string name="encryption">Encryption</string>
     <string name="no_encryption">Not encrypted of course, not implemented</string>
+    <string name="authentication_success">Authentication success</string>
 </resources>

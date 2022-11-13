@@ -2,6 +2,8 @@ package com.hnu.nanamail.data
 
 import android.util.Log
 import com.hnu.nanamail.util.parseMessagesIntoMails
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.mail.*
 
@@ -14,13 +16,13 @@ object Pop3Backend {
     private var props = Properties()
     private lateinit var session: Session
 
-    fun verify(): String {
+    suspend fun verify(): String = withContext(Dispatchers.IO) {
         try {
             props["mail.store.protocol"] = "pop3"
             props["mail.pop3.auth"] = "true"
             props["mail.pop3.host"] = server
             props["mail.pop3.port"] = portNumber
-            if(encryptMethod != "") {
+            if (encryptMethod != "") {
                 props["mail.pop3.starttls.enable"] = "true"
             }
             val auth = object : Authenticator() {
@@ -32,19 +34,19 @@ object Pop3Backend {
             val store = session.getStore("pop3")
             store.connect(server, portNumber, mailAddress, password)
             store.close()
-            return "success"
+            return@withContext "success"
         } catch (e: AuthenticationFailedException) {
             Log.e("Pop3Backend", "Authentication failed")
             e.printStackTrace()
-            return "Authentication failed"
+            return@withContext "Authentication failed"
         } catch (e: MessagingException) {
             Log.e("Pop3Backend", "MessagingException")
             e.printStackTrace()
-            return "MessagingException"
+            return@withContext "MessagingException"
         } catch (e: Exception) {
             Log.e("Pop3Backend", "Exception")
             e.printStackTrace()
-            return "Exception"
+            return@withContext "Exception"
         }
     }
 

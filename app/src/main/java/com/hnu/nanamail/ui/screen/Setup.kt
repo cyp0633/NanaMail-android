@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -16,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.viewmodel.SetupViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,10 +26,13 @@ fun SetupScreen(
     navController: NavController,
     viewModel: SetupViewModel
 ) {
+    val scope = rememberCoroutineScope()
     if (viewModel.showDialog.value) {
         AlertDialog(
             onDismissRequest = {
-                viewModel.onDismissRequest
+                if (viewModel.proceed.value) {
+                    navController.popBackStack()
+                }
                 viewModel.showDialog.value = false
             },
             title = {
@@ -34,7 +40,10 @@ fun SetupScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.onDismissRequest; viewModel.showDialog.value = false
+                    if (viewModel.proceed.value) {
+                        navController.popBackStack()
+                    }
+                    viewModel.showDialog.value = false
                 }) {
                     Text(text = stringResource(id = R.string.confirm))
                 }
@@ -174,14 +183,7 @@ fun SetupScreen(
             // 完成
             Button(
                 onClick = {
-                    val result = viewModel.verify()
-                    if (result == "success") {
-                        viewModel.dialogText = "连接成功"
-                        viewModel.onDismissRequest = { navController.navigate("inbox") }
-                    } else {
-                        viewModel.dialogText = result
-                    }
-                    viewModel.showDialog.value = true
+                    viewModel.verify()
                 },
                 modifier = Modifier
                     .padding(vertical = 20.dp)

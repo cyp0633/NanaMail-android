@@ -1,6 +1,8 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.activation.DataHandler
 import javax.mail.*
@@ -15,7 +17,7 @@ object SmtpBackend {
     var encryptMethod: String = ""
     var portNumber: Int = 0
 
-    fun verify(): String {
+    suspend fun verify(): String = withContext(Dispatchers.IO) {
         try {
             val props = Properties()
             props["mail.transport.protocol"] = "smtp"
@@ -32,21 +34,21 @@ object SmtpBackend {
             }
             val session = Session.getInstance(props, auth)
             val transport = session.transport
-            transport.connect()
+            transport.connect(server, portNumber, mailAddress, password)
             transport.close()
-            return "success"
+            return@withContext "success"
         } catch (e: AuthenticationFailedException) {
             Log.e("SmtpBackend", "Authentication failed: ${e.message}")
             e.printStackTrace()
-            return "Authentication failed: ${e.message}"
+            return@withContext "Authentication failed: ${e.message}"
         } catch (e: MessagingException) {
             Log.e("SmtpBackend", "MessagingException: ${e.message}")
             e.printStackTrace()
-            return "MessagingException: ${e.message}"
+            return@withContext "MessagingException: ${e.message}"
         } catch (e: Exception) {
             Log.e("SmtpBackend", "Exception: ${e.message}")
             e.printStackTrace()
-            return "Exception: ${e.message}"
+            return@withContext "Exception: ${e.message}"
         }
     }
 

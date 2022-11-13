@@ -8,12 +8,12 @@
     <string name="mail_address">电子邮件地址</string>
     <string name="password">密码</string>
     <string name="basic_account_info">账户基本信息</string>
-    <string name="receive_server_info">收件服务器设定</string>
+    <string name="receive_server_info">收件服务器设定 (POP3)</string>
     <string name="pop3_server">POP3 服务器地址</string>
     <string name="receive_encrypt_method">接收加密方法</string>
     <string name="receive_port_number">接收服务器端口号</string>
     <string name="receive_username">接收用户名</string>
-    <string name="send_server_info">发件服务器设定</string>
+    <string name="send_server_info">发件服务器设定 (SMTP)</string>
     <string name="smtp_server">SMTP 服务器地址</string>
     <string name="send_encrypt_method">发送加密方法</string>
     <string name="send_port_number">发送服务器端口号</string>
@@ -35,4 +35,5 @@
     <string name="expand_detail">查看细节</string>
     <string name="encryption">加密</string>
     <string name="no_encryption">当然没有加密，因为没做</string>
+    <string name="authentication_success">验证成功</string>
 </resources>
