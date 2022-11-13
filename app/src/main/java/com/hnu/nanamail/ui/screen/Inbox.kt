@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,9 +20,13 @@ import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.InboxViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun InboxScreen(
     viewModel: InboxViewModel,
@@ -33,6 +35,16 @@ fun InboxScreen(
     val login = remember { mutableStateOf(true) }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val refreshScope = rememberCoroutineScope()
+    var refreshing by remember { mutableStateOf(false) }
+    fun refresh() = refreshScope.launch {
+        refreshing = true
+//        viewModel.fetchMails()
+        delay(5000)
+        refreshing = false
+    }
+
+    val refreshState = rememberPullRefreshState(refreshing, ::refresh)
 //    if (!viewModel.checkLogin()) {
 //        login.value = false
 //    }
@@ -66,6 +78,7 @@ fun InboxScreen(
                 selectedItem = NavItem.Inbox
             )
         },
+        modifier = Modifier.fillMaxSize(),
         drawerState = drawerState,
         gesturesEnabled = false
     ) {
@@ -81,28 +94,42 @@ fun InboxScreen(
                     text = stringResource(id = R.string.inbox)
                 )
             },
+            modifier = Modifier.fillMaxSize()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
                     .padding(it)
-                    .verticalScroll(rememberScrollState()),
+                    .pullRefresh(refreshState)
+                    .fillMaxSize()
             ) {
-                TrashEntryComponent(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp)
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxSize()
+                        .heightIn(min = 300.dp)
                 ) {
-                    navController.navigate("trash")
-                }
-                for (mail in viewModel.mailList) {
-                    MailItemComponent(mail = mail) {
-                        navController.navigate("mail/${mail.uuid}")
+                    TrashEntryComponent(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
+                    ) {
+                        navController.navigate("trash")
+                    }
+                    for (mail in viewModel.mailList) {
+                        MailItemComponent(mail = mail) {
+                            navController.navigate("mail/${mail.uuid}")
+                        }
                     }
                 }
+                PullRefreshIndicator(
+                    refreshing = refreshing,
+                    state = refreshState,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             }
         }
-
     }
 }
 
