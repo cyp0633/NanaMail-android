@@ -45,7 +45,10 @@ fun SettingsScreen(
                 },
                 selectedItem = NavItem.Settings
             )
-        }
+        },
+        modifier = Modifier.fillMaxSize(),
+        drawerState = drawerState,
+        gesturesEnabled = false,
     ) {
         Scaffold(
             topBar = {
