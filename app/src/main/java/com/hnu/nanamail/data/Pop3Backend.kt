@@ -1,8 +1,10 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
+import androidx.lifecycle.ViewModelStore
 import com.hnu.nanamail.util.parseMessagesIntoMails
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.mail.*
@@ -51,9 +53,12 @@ object Pop3Backend {
     }
 
     // 从收件箱拉取邮件
-    fun fetchInbox(): List<Mail> {
+    suspend fun fetchInbox(): List<Mail> {
         val store: Store
         val emailFolder: Folder
+        if (!::session.isInitialized) {
+            verify()
+        }
         try {
             store = session.getStore("pop3")
             store.connect(mailAddress, password)
@@ -77,6 +82,4 @@ object Pop3Backend {
         }
         return listOf()
     }
-
-
 }
