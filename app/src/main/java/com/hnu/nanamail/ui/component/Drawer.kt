@@ -28,6 +28,7 @@ fun DrawerComponent(
         NavItem.Outbox,
         NavItem.Sent,
         NavItem.Trash,
+        NavItem.Settings
     )
     ModalDrawerSheet(
         modifier = Modifier.widthIn(max = 250.dp),

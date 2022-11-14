@@ -1,5 +1,6 @@
 package com.hnu.nanamail.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
@@ -100,6 +101,37 @@ fun MainTopBarComponent(
     )
 }
 
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun DrawerTopBarComponent(
+    onClickDrawer: () -> Unit,
+    text: String
+) {
+    CenterAlignedTopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+        title = {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleLarge,
+            )
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+            actionIconContentColor = MaterialTheme.colorScheme.primary,
+            navigationIconContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        navigationIcon = {
+            IconButton(onClick = { onClickDrawer() }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+        },
+    )
+}
 
 @Preview
 @Composable
@@ -129,5 +161,14 @@ fun MainTopBarComponentPreview() {
         onClickCompose = {},
         onClickDrawer = {},
         text = "收件箱"
+    )
+}
+
+@Preview
+@Composable
+fun DrawerTopBarComponentPreview() {
+    DrawerTopBarComponent(
+        onClickDrawer = {},
+        text = "带侧边栏按钮的顶栏"
     )
 }

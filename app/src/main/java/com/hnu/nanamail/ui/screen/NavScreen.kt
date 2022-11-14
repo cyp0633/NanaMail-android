@@ -71,6 +71,13 @@ fun NavScreen(application: Application) {
                 viewModel = viewModel
             )
         }
+        composable(NavItem.Settings.route) {
+            val viewModel = ViewModelProvider(it)[SettingsViewModel::class.java]
+            SettingsScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
     }
 }
 
@@ -86,4 +93,5 @@ sealed class NavItem(
     object Sent : NavItem("sent", R.drawable.send, R.string.sent)
     object Detail : NavItem("detail", null, R.string.mail_detail)
     object Trash : NavItem("trash", R.drawable.unsubscribe, R.string.trash_mail)
+    object Settings: NavItem("settings", R.drawable.settings, R.string.settings)
 }

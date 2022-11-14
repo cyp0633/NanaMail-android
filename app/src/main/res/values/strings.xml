@@ -36,4 +36,9 @@
     <string name="encryption">加密</string>
     <string name="no_encryption">当然没有加密，因为没做</string>
     <string name="authentication_success">验证成功</string>
+    <string name="settings">设置</string>
+    <string name="credits">Credit: @cyp0633</string>
+    <string name="open_source">开源声明</string>
+    <string name="course_project">计算机网络课程作业，不建议日常使用</string>
+    <string name="clear_and_reset">清空数据并开始设置向导</string>
 </resources>
