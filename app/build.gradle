@@ -95,6 +95,7 @@ dependencies {
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
     // LiveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-alpha02'
