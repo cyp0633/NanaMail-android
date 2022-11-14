@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -100,13 +101,16 @@ fun SettingsScreen(
                         JavaMail (JakartaMail), EPLv2
                         Google Accompanist, Apache 2.0
                         Jetpack libraries, Apache 2.0
+                        Koin, Apache 2.0
                     """.trimIndent(),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center
                 )
                 Button(
                     onClick = {
                         viewModel.clearData()
+                        navController.navigate(NavItem.Setup.route)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
