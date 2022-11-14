@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -15,16 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
+import com.hnu.nanamail.data.User
 import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.InboxViewModel
-import kotlinx.coroutines.launch
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import com.hnu.nanamail.data.User
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -38,11 +39,14 @@ fun InboxScreen(
     val scope = rememberCoroutineScope()
     val refreshScope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
+    val mailList by viewModel.mailList.observeAsState(listOf())
     fun refresh() = refreshScope.launch {
         refreshing = true
         viewModel.fetchMail()
+        delay(1000)
         refreshing = false
     }
+
     val refreshState = rememberPullRefreshState(refreshing, ::refresh)
     if (User.currentUser == null) {
         login.value = viewModel.checkLogin()
@@ -65,8 +69,8 @@ fun InboxScreen(
             }
         )
     } else {
-        LaunchedEffect(true) {
-            viewModel.getMailList()
+        LaunchedEffect(Unit) {
+            refresh()
         }
     }
     ModalNavigationDrawer(
@@ -115,7 +119,7 @@ fun InboxScreen(
                     ) {
                         navController.navigate("trash")
                     }
-                    for (mail in viewModel.mailList) {
+                    for (mail in mailList) {
                         MailItemComponent(mail = mail) {
                             navController.navigate("mail/${mail.uuid}")
                         }

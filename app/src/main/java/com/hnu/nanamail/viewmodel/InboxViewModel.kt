@@ -1,10 +1,10 @@
 package com.hnu.nanamail.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
 import com.hnu.nanamail.data.Mail
@@ -15,8 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class InboxViewModel(application: Application) : AndroidViewModel(application) {
-    var mailList = mutableStateListOf<Mail>()
     val page = mutableStateOf(1)
+    var mailList: LiveData<List<Mail>> = MutableLiveData()
 
     fun checkLogin(): Boolean {
         viewModelScope.launch(Dispatchers.IO) {
@@ -30,8 +30,10 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             mailList =
                 AppDatabase.getDatabase(getApplication()).mailDao()
-                    .getMailListByPage(page.value, MailType.INBOX)
-                    .toMutableStateList()
+                    .getMailListLiveDataByPage(
+                        page.value,
+                        MailType.INBOX
+                    )
         }
     }
 
@@ -43,8 +45,10 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
                 .insertMails(*fetchList.toTypedArray())
             mailList =
                 AppDatabase.getDatabase(getApplication()).mailDao()
-                    .getMailListByPage(page.value, MailType.INBOX)
-                    .toMutableStateList()
+                    .getMailListLiveDataByPage(
+                        page.value,
+                        MailType.INBOX
+                    )
         }
     }
 }
