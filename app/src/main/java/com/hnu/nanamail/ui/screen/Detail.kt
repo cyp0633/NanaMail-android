@@ -7,9 +7,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,95 +29,113 @@ import com.hnu.nanamail.viewmodel.DetailViewModel
 fun DetailScreen(
     navController: NavController,
     viewModel: DetailViewModel,
-    mail: Mail
+    uuid: String
 ) {
+    // 在启动时拉取邮件信息
+    LaunchedEffect(Unit) {
+        viewModel.fetch(uuid)
+    }
     if (!viewModel.exist.value) {
         AlertDialog(
             onDismissRequest = { navController.popBackStack() },
             title = { Text(stringResource(id = R.string.mail_not_found)) },
             confirmButton = { Text(stringResource(id = R.string.confirm)) }
         )
-    }
-    Scaffold(
-        topBar = {
-            DetailTopBar(
-                onClickBack = { navController.popBackStack() },
-                onClickUnread = { viewModel.setUnread() },
-                onClickDelete = { viewModel.delete() },
+    } else {
+        Scaffold(
+            topBar = {
+                DetailTopBar(
+                    onClickBack = { navController.popBackStack() },
+                    onClickUnread = { viewModel.setUnread() },
+                    onClickDelete = { viewModel.delete() },
+                )
+            }
+        ) { paddingValues ->
+            DetailComponent(
+                viewModel = viewModel,
+                mail = viewModel.mail.value,
+                paddingValues = paddingValues
             )
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
+    }
+}
+
+@Composable
+fun DetailComponent(
+    viewModel: DetailViewModel,
+    mail: Mail,
+    paddingValues: PaddingValues = PaddingValues(0.dp)
+) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 20.dp)
+    ) {
+        // 主题
+        Text(
+            text = mail.subject,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.padding(vertical = 10.dp),
+            color = MaterialTheme.colorScheme.primary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+        Row(
+            modifier = Modifier.padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // 主题
+            // 发件人
             Text(
-                text = mail.subject,
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(vertical = 10.dp),
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                text = mail.sender,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                fontWeight = FontWeight.Bold
             )
-            Row(
-                modifier = Modifier.padding(vertical = 10.dp),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // 发件人
-                Text(
-                    text = mail.sender,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                // 发件时间
-                Text(
-                    text = mail.getTimeStr(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
-            // 收件人和按钮
-            Row(
-                modifier = Modifier.padding(vertical = 10.dp),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.recipient_to) + ": " + mail.recipientTo,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                IconButton(
-                    onClick = {
-                        viewModel.expandMsgDetail.value = !viewModel.expandMsgDetail.value
-                    },
-                    modifier = Modifier.size(20.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.expand_more),
-                        contentDescription = stringResource(id = R.string.expand_detail),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            }
-            if (viewModel.expandMsgDetail.value) {
-                CommunicationDetailComponent(mail = mail)
-            }
-            Divider()
-            // 正文
+            Spacer(modifier = Modifier.width(10.dp))
+            // 发件时间
             Text(
-                text = mail.content,
+                text = mail.getTimeStr(),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(vertical = 10.dp),
             )
         }
+        // 收件人和按钮
+        Row(
+            modifier = Modifier.padding(vertical = 10.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.recipient_to) + ": " + mail.recipientTo,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            IconButton(
+                onClick = {
+                    viewModel.expandMsgDetail.value = !viewModel.expandMsgDetail.value
+                },
+                modifier = Modifier.size(20.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.expand_more),
+                    contentDescription = stringResource(id = R.string.expand_detail),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+            }
+        }
+        if (viewModel.expandMsgDetail.value) {
+            CommunicationDetailComponent(mail = mail)
+        }
+        Divider()
+        // 正文
+        Text(
+            text = mail.content,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(vertical = 10.dp),
+        )
     }
 }
 
@@ -289,10 +307,9 @@ fun CommunicationDetailComponentPreview() {
 
 @Preview
 @Composable
-fun DetailScreenPreview() {
+fun DetailComponentPreview() {
     NanaMailTheme {
-        DetailScreen(
-            navController = NavController(Application()),
+        DetailComponent(
             viewModel = DetailViewModel(Application()),
             mail = Mail(
                 subject = "测试标题",

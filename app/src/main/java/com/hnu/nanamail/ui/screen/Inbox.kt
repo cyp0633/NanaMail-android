@@ -121,7 +121,7 @@ fun InboxScreen(
                     }
                     for (mail in mailList) {
                         MailItemComponent(mail = mail) {
-                            navController.navigate("mail/${mail.uuid}")
+                            navController.navigate("detail/${mail.uuid}")
                         }
                     }
                 }

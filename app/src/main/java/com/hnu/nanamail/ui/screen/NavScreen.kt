@@ -57,11 +57,10 @@ fun NavScreen(application: Application) {
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) {
             val viewModel = ViewModelProvider(it)[DetailViewModel::class.java]
-            val mail = viewModel.fetch(it.arguments?.getString("uuid")!!)
             DetailScreen(
                 navController = navController,
                 viewModel = viewModel,
-                mail = mail
+                uuid = it.arguments?.getString("uuid") ?: ""
             )
         }
         composable(NavItem.Trash.route) {
