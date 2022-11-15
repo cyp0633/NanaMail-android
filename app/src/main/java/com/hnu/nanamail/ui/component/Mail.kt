@@ -65,7 +65,7 @@ fun MailItemComponent(
                         }
                     }
                     Text(
-                        text = mail.getTimeStr(),
+                        text = mail.getShortDate(),
                         style = MaterialTheme.typography.bodySmall,
                         color = if (mail.isRead) {
                             MaterialTheme.colorScheme.primary

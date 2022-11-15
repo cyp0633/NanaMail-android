@@ -103,7 +103,7 @@ fun DetailComponent(
             Spacer(modifier = Modifier.width(10.dp))
             // 发件时间
             Text(
-                text = mail.getTimeStr(),
+                text = mail.getShortDate(),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.secondary,
             )
@@ -232,6 +232,12 @@ fun CommunicationDetailComponent(
                         modifier = Modifier.padding(vertical = 5.dp)
                     )
                 }
+                // 日期
+                Text(
+                    text = stringResource(id = R.string.date),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
                 // 加密
                 Text(
                     text = stringResource(id = R.string.encryption),
@@ -270,6 +276,12 @@ fun CommunicationDetailComponent(
                         modifier = Modifier.padding(vertical = 5.dp),
                     )
                 }
+                // 日期
+                Text(
+                    text = mail.getTimeStr(),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(vertical = 5.dp),
+                )
                 // 加密
                 Text(
                     text = stringResource(id = R.string.no_encryption),

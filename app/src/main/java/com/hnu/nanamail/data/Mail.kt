@@ -58,7 +58,12 @@ data class Mail(
 ) {
     fun getTimeStr(): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("zh", "CN"))
-        return simpleDateFormat.format(Date(time * 1000))
+        return simpleDateFormat.format(Date(time))
+    }
+
+    fun getShortDate(): String {
+        val simpleDateFormat = SimpleDateFormat("MM-dd", Locale("zh", "CN"))
+        return simpleDateFormat.format(Date(time))
     }
 
     override fun toString(): String {

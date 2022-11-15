@@ -43,4 +43,5 @@
     <string name="course_project">Computer Networking course project, not recommended for daily use</string>
     <string name="clear_and_reset">CLEAR ALL DATA and start setup guide</string>
     <string name="not_supported_by_protocol">Feature not supported by protocol</string>
+    <string name="date">Date</string>
 </resources>
