@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class SentViewModel(application: Application) : AndroidViewModel(application) {
     var mailList = mutableListOf<Mail>()
-    val page = mutableStateOf(1)
+    val page = mutableStateOf(0)
 
     fun checkLogin(): Boolean {
         viewModelScope.launch(Dispatchers.IO) {

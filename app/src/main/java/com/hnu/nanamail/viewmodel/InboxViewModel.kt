@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class InboxViewModel(application: Application) : AndroidViewModel(application) {
-    val page = mutableStateOf(1)
+    val page = mutableStateOf(0)
     var mailList: LiveData<List<Mail>> = MutableLiveData()
 
     fun checkLogin(): Boolean {
