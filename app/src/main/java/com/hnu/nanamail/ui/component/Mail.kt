@@ -28,6 +28,9 @@ fun MailItemComponent(
             modifier = modifier,
             onClick = { onClick() },
             shape = RoundedCornerShape(0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         ) {
             Column(
                 modifier = Modifier
@@ -45,7 +48,7 @@ fun MailItemComponent(
                         Text(
                             text = mail.sender,
                             style = MaterialTheme.typography.titleMedium,
-                            color = if (mail.isRead) {
+                            color = if (!mail.isRead) {
                                 MaterialTheme.colorScheme.primary
                             } else {
                                 MaterialTheme.colorScheme.secondary
@@ -67,7 +70,7 @@ fun MailItemComponent(
                     Text(
                         text = mail.getShortDate(),
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (mail.isRead) {
+                        color = if (!mail.isRead) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.secondary
@@ -77,7 +80,7 @@ fun MailItemComponent(
                 Text(
                     text = mail.subject,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (mail.isRead) {
+                    color = if (!mail.isRead) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.secondary
@@ -88,7 +91,7 @@ fun MailItemComponent(
                 Text(
                     text = mail.preview,
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (mail.isRead) {
+                    color = if (!mail.isRead) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.secondary
@@ -100,8 +103,8 @@ fun MailItemComponent(
         }
         Divider(
             color = MaterialTheme.colorScheme.primary,
-            thickness = 1.dp,
-            modifier = Modifier.padding(horizontal = 10.dp)
+            thickness = 0.5f.dp,
+            modifier = Modifier.padding(horizontal = 1.dp)
         )
     }
 }
@@ -118,7 +121,7 @@ fun ReadMailItemComponentPreview() {
                 senderAddress = "sender@test",
                 recipientTo = "test, test2",
                 recipientCc = "test3",
-                subject = "测试标题",
+                subject = "这封未读测试标题",
                 content = "测试内容",
                 preview = "测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览测试预览",
                 isRead = false,
@@ -139,7 +142,7 @@ fun ReadMailItemComponentPreview() {
                 senderAddress = "sender@test",
                 recipientTo = "test, test2",
                 recipientCc = "test3",
-                subject = "测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
+                subject = "这封已读测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题",
                 content = "测试内容",
                 preview = "测试预览",
                 isRead = true,
