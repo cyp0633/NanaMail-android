@@ -109,6 +109,30 @@ fun SettingsScreen(
                     color = MaterialTheme.colorScheme.secondary,
                     textAlign = TextAlign.Center
                 )
+                Text(
+                    text = stringResource(id = R.string.destructive_function),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(vertical = 20.dp)
+                )
+                Text(
+                    text = stringResource(id = R.string.think_twice_before_proceed),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center
+                )
+                Button(
+                    onClick = {
+                        viewModel.clearMails()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    ),
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.clear_mails))
+                }
                 Button(
                     onClick = {
                         viewModel.clearData()
@@ -118,7 +142,7 @@ fun SettingsScreen(
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError
                     ),
-                    modifier = Modifier.padding(vertical = 20.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 ) {
                     Text(text = stringResource(id = R.string.clear_and_reset))
                 }

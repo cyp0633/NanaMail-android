@@ -8,11 +8,19 @@ import com.hnu.nanamail.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(application: Application):AndroidViewModel(application) {
+class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     fun clearData() {
-        viewModelScope.launch (Dispatchers.IO)  {
+        viewModelScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getDatabase(getApplication())
             db.userDao().deleteUser(User.currentUser!!)
         }
+    }
+
+    /**
+     * 清空所有邮件
+     */
+    fun clearMails() = viewModelScope.launch(Dispatchers.IO) {
+        val db = AppDatabase.getDatabase(getApplication())
+        db.mailDao().clearAll()
     }
 }

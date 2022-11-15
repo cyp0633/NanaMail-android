@@ -43,4 +43,7 @@
     <string name="clear_and_reset">清空数据并开始设置向导</string>
     <string name="not_supported_by_protocol">协议不支持该特性</string>
     <string name="date">日期</string>
+    <string name="destructive_function">破坏性功能</string>
+    <string name="think_twice_before_proceed">请三思而后行！</string>
+    <string name="clear_mails">清空邮件数据库</string>
 </resources>

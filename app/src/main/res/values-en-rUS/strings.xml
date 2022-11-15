@@ -44,4 +44,7 @@
     <string name="clear_and_reset">CLEAR ALL DATA and start setup guide</string>
     <string name="not_supported_by_protocol">Feature not supported by protocol</string>
     <string name="date">Date</string>
+    <string name="destructive_function">Destructive function</string>
+    <string name="think_twice_before_proceed">Please think twice before you proceed!</string>
+    <string name="clear_mails">Clear mails</string>
 </resources>

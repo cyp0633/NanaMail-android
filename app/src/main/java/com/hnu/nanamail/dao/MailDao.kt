@@ -57,4 +57,10 @@ interface MailDao {
      */
     @Query("UPDATE mail SET is_read = :isRead WHERE uuid = :uuid")
     fun markAsRead(uuid: String, isRead: Boolean = true)
+
+    /**
+     * 清空所有邮件
+     */
+    @Query("DELETE FROM mail")
+    fun clearAll()
 }
