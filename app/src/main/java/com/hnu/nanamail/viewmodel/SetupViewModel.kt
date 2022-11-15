@@ -26,6 +26,9 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
     val modifiedPop3Server = mutableStateOf(false)
     val modifiedSmtpServer = mutableStateOf(false)
 
+    val sendStartTlsChecked = mutableStateOf(false)
+    val receiveStartTlsChecked = mutableStateOf(false)
+
     // 提示框内容
     var showDialog = mutableStateOf(false)
     var dialogText = ""
@@ -101,5 +104,31 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
             db.userDao().deleteUser(existUser)
         }
         db.userDao().insertUser(user)
+    }
+
+    /**
+     * 改变发送服务器加密状态
+     */
+    fun changeSendEncryptMethod() {
+        if (sendStartTlsChecked.value) {
+            sendStartTlsChecked.value = false
+            sendEncryptMethod.value = ""
+        } else {
+            sendStartTlsChecked.value = true
+            sendEncryptMethod.value = "STARTTLS"
+        }
+    }
+
+    /**
+     * 改变接收服务器加密状态
+     */
+    fun changeReceiveEncryptMethod() {
+        if (receiveStartTlsChecked.value) {
+            receiveStartTlsChecked.value = false
+            receiveEncryptMethod.value = ""
+        } else {
+            receiveStartTlsChecked.value = true
+            receiveEncryptMethod.value = "STARTTLS"
+        }
     }
 }

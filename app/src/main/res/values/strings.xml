@@ -46,4 +46,5 @@
     <string name="destructive_function">破坏性功能</string>
     <string name="think_twice_before_proceed">请三思而后行！</string>
     <string name="clear_mails">清空邮件数据库</string>
+    <string name="enable_starttls">启用 STARTTLS</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -122,15 +123,24 @@ fun SetupScreen(
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
             )
-            // 加密方式
-            TextField(
-                value = viewModel.receiveEncryptMethod.value,
-                onValueChange = { viewModel.receiveEncryptMethod.value = it },
-                label = { Text(text = stringResource(id = R.string.receive_encrypt_method)) },
+            // 加密方式复选框
+            Row(
                 modifier = Modifier
-                    .padding(vertical = 10.dp)
                     .fillMaxWidth(),
-            )
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = viewModel.receiveStartTlsChecked.value,
+                    onCheckedChange = { viewModel.changeReceiveEncryptMethod() },
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = stringResource(id = R.string.enable_starttls),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             // 端口号
             TextField(
                 value = viewModel.receivePortNumber.value,
@@ -160,15 +170,24 @@ fun SetupScreen(
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
             )
-            // 加密方式
-            TextField(
-                value = viewModel.sendEncryptMethod.value,
-                onValueChange = { viewModel.sendEncryptMethod.value = it },
-                label = { Text(text = stringResource(id = R.string.send_encrypt_method)) },
+            // 加密方式复选框
+            Row(
                 modifier = Modifier
-                    .padding(vertical = 10.dp)
                     .fillMaxWidth(),
-            )
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = viewModel.sendStartTlsChecked.value,
+                    onCheckedChange = { viewModel.changeSendEncryptMethod() },
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = stringResource(id = R.string.enable_starttls),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             // 端口号
             TextField(
                 value = viewModel.sendPortNumber.value,
