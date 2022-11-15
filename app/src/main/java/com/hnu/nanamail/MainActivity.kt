@@ -2,6 +2,7 @@ package com.hnu.nanamail
 
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.hnu.nanamail.dao.AppDatabase
+import com.hnu.nanamail.data.Pop3Backend
+import com.hnu.nanamail.data.SmtpBackend
 import com.hnu.nanamail.data.User
 import com.hnu.nanamail.ui.screen.NavScreen
 import com.hnu.nanamail.ui.theme.NanaMailTheme
@@ -28,8 +31,8 @@ class MainActivity : ComponentActivity() {
         // 用于沉浸式状态栏
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.setDecorFitsSystemWindows(false)
-
-        GlobalScope.launch {
+        // 从数据库读取用户信息
+        GlobalScope.launch(Dispatchers.IO) {
             getUser()
         }
         setContent {
@@ -59,6 +62,7 @@ class MainActivity : ComponentActivity() {
         val user = db.userDao().getUser()
         if (user != null) {
             User.currentUser = user
+            Log.i("User", "User: ${User.currentUser}")
         }
     }
 }

@@ -18,6 +18,28 @@ object Pop3Backend {
     private var props = Properties()
     private lateinit var session: Session
 
+    /**
+     * 从 User.currentUser 中获取服务器信息
+     */
+    fun init() {
+        mailAddress = User.currentUser?.mailAddress ?: ""
+        password = User.currentUser?.password ?: ""
+        server = User.currentUser?.pop3Server ?: ""
+        encryptMethod = User.currentUser?.receiveEncryptMethod ?: ""
+        portNumber = User.currentUser?.receivePortNumber ?: 0
+        props["mail.transport.protocol"] = "pop3"
+        props["mail.pop3.host"] = server
+        props["mail.pop3.port"] = portNumber
+        if (encryptMethod != "") {
+            props["mail.pop3.starttls.enable"] = "true"
+        }
+        session = Session.getInstance(props)
+        Log.i(
+            "Pop3Backend",
+            "init backend as: $mailAddress $password $server $encryptMethod $portNumber"
+        )
+    }
+
     suspend fun verify(): String = withContext(Dispatchers.IO) {
         try {
             props["mail.store.protocol"] = "pop3"
@@ -56,6 +78,9 @@ object Pop3Backend {
     suspend fun fetchInbox(): List<Mail> {
         val store: Store
         val emailFolder: Folder
+        if (mailAddress == "" || password == "" || server == "" || encryptMethod == "" || portNumber == 0) {
+            init()
+        }
         if (!::session.isInitialized) {
             verify()
         }

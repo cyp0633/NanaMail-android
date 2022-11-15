@@ -17,6 +17,21 @@ object SmtpBackend {
     var encryptMethod: String = ""
     var portNumber: Int = 0
 
+    /**
+     * 从 User.currentUser 中获取服务器信息
+     */
+    private fun init() {
+        mailAddress = User.currentUser?.mailAddress ?: ""
+        password = User.currentUser?.password ?: ""
+        server = User.currentUser?.smtpServer ?: ""
+        encryptMethod = User.currentUser?.sendEncryptMethod ?: ""
+        portNumber = User.currentUser?.sendPortNumber ?: 0
+        Log.i(
+            "SmtpBackend",
+            "init backend as: $mailAddress $password $server $encryptMethod $portNumber"
+        )
+    }
+
     suspend fun verify(): String = withContext(Dispatchers.IO) {
         try {
             val props = Properties()
@@ -52,6 +67,15 @@ object SmtpBackend {
         }
     }
 
+    /**
+     * 发送邮件
+     * @param username 用户名
+     * @param recipient 收件人
+     * @param recipientCc 抄送人
+     * @param recipientBcc 密送人
+     * @param subject 主题
+     * @param content 内容
+     */
     fun sendMail(
         username: String,
         recipient: String,
@@ -61,6 +85,9 @@ object SmtpBackend {
         content: String
     ) {
         try {
+            if (mailAddress == "" || password == "" || server == "" || portNumber == 0) {
+                init()
+            }
             val props = Properties()
             props["mail.transport.protocol"] = "smtp"
             props["mail.smtp.host"] = server
