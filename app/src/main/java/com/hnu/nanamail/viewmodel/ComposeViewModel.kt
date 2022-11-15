@@ -1,7 +1,6 @@
 package com.hnu.nanamail.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,7 +22,8 @@ class ComposeViewModel(application: Application) : AndroidViewModel(application)
     val subject = mutableStateOf("")
     val content = mutableStateOf("")
 
-    fun sendMail() {
+    fun sendMail() = viewModelScope.launch(Dispatchers.IO) {
+        val db = AppDatabase.getDatabase(getApplication())
         val mail = Mail(
             uuid = UUID.randomUUID().toString(), // 此处仍然可以用 UUID，因为不会重新抓取邮件
             account = username,
@@ -33,22 +33,23 @@ class ComposeViewModel(application: Application) : AndroidViewModel(application)
             recipientCc = recipientCc.value,
             subject = subject.value,
             content = content.value,
-            type = MailType.SENT,
+            type = MailType.OUTBOX,
             preview = content.value.substring(0, 50),
             time = System.currentTimeMillis(),
         )
-        viewModelScope.launch(Dispatchers.IO) {
-            // 发送邮件
-            SmtpBackend.sendMail(
-                username,
-                recipient.value,
-                recipientCc.value,
-                recipientBcc.value,
-                subject.value,
-                content.value
-            )
-            // 写入已发送（发送失败怎么办？）
-            AppDatabase.getDatabase(getApplication()).mailDao().insertMails(mail)
+        db.mailDao().insertMail(mail)
+        // 发送邮件
+        val sent = SmtpBackend.sendMail(
+            username,
+            recipient.value,
+            recipientCc.value,
+            recipientBcc.value,
+            subject.value,
+            content.value
+        )
+        // 若发送成功，写入已发送
+        if (sent) {
+            db.mailDao().moveToSent(mail.uuid, MailType.SENT)
         }
     }
 }

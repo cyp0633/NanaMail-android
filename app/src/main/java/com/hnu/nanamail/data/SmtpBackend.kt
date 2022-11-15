@@ -83,7 +83,7 @@ object SmtpBackend {
         recipientBcc: String,
         subject: String,
         content: String
-    ) {
+    ):Boolean {
         try {
             if (mailAddress == "" || password == "" || server == "" || portNumber == 0) {
                 init()
@@ -125,9 +125,15 @@ object SmtpBackend {
             }
             transport.sendMessage(message, message.allRecipients)
             transport.close()
+            return true
         } catch (e: MessagingException) {
             Log.e("SmtpBackend", "MessagingException: ${e.message}")
             e.printStackTrace()
+            return false
+        } catch (e: Exception) {
+            Log.e("SmtpBackend", "Exception: ${e.message}")
+            e.printStackTrace()
+            return false
         }
     }
 }

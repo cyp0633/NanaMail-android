@@ -70,4 +70,10 @@ interface MailDao {
      */
     @Query("DELETE FROM mail")
     fun clearAll()
+
+    /**
+     * 移入已发送（一般见于发件箱）
+     */
+    @Query("UPDATE mail SET type = :type WHERE uuid = :uuid")
+    fun moveToSent(uuid: String, type: MailType)
 }
