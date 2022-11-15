@@ -92,6 +92,7 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
+                singleLine = true,
             )
             // 密码
             TextField(
@@ -101,7 +102,8 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
             )
             Spacer(modifier = Modifier.height(20.dp))
             // 接收设置
@@ -122,6 +124,7 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
+                singleLine = true,
             )
             // 加密方式复选框
             Row(
@@ -149,6 +152,7 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
+                singleLine = true,
             )
             Spacer(modifier = Modifier.height(20.dp))
             // 发送设置
@@ -169,6 +173,7 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
+                singleLine = true,
             )
             // 加密方式复选框
             Row(
@@ -196,6 +201,7 @@ fun SetupScreen(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(),
+                singleLine = true,
             )
             // 完成
             Button(

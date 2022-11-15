@@ -90,8 +90,8 @@ fun ComposeScreen(
                         onValueChange = {
                             viewModel.recipient.value = it
                         },
-                        textStyle = MaterialTheme.typography.bodyLarge,
-                        maxLines = 1,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
+                        singleLine = true,
                     )
                 }
                 if (!viewModel.showRecipientCc.value) {
@@ -131,8 +131,8 @@ fun ComposeScreen(
                         onValueChange = {
                             viewModel.recipientCc.value = it
                         },
-                        textStyle = MaterialTheme.typography.bodyLarge,
-                        maxLines = 1,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
+                        singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -156,8 +156,8 @@ fun ComposeScreen(
                         onValueChange = {
                             viewModel.recipientBcc.value = it
                         },
-                        textStyle = MaterialTheme.typography.bodyLarge,
-                        maxLines = 1,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
+                        singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -182,8 +182,8 @@ fun ComposeScreen(
                     onValueChange = {
                         viewModel.subject.value = it
                     },
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
+                    singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -203,7 +203,7 @@ fun ComposeScreen(
                 onValueChange = {
                     viewModel.content.value = it
                 },
-                textStyle = MaterialTheme.typography.bodyLarge,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
             )
         }
     }
