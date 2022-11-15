@@ -34,7 +34,10 @@ class ComposeViewModel(application: Application) : AndroidViewModel(application)
             subject = subject.value,
             content = content.value,
             type = MailType.OUTBOX,
-            preview = content.value.substring(0, 50),
+            preview = if (content.value.length > 50) content.value.substring(
+                0,
+                50
+            ) else content.value,
             time = System.currentTimeMillis(),
         )
         db.mailDao().insertMail(mail)
