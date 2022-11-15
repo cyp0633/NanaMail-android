@@ -17,22 +17,13 @@ class SentViewModel(application: Application) : AndroidViewModel(application) {
     var mailList = mutableListOf<Mail>()
     val page = mutableStateOf(0)
 
-    // 从数据库中获取邮件（不联网）
+    /**
+     * 从数据库获取已发送邮件
+     *
+     * POP3 不支持获取已发送邮件，故不需要连网
+     */
     fun getMailList() {
         viewModelScope.launch(Dispatchers.IO) {
-            mailList =
-                AppDatabase.getDatabase(getApplication()).mailDao()
-                    .getMailListByPage(page.value, MailType.SENT)
-                    .toMutableStateList()
-        }
-    }
-
-    // 从远程收件箱获取邮件
-    fun fetchMail() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val fetchList = Pop3Backend.fetchInbox()
-            AppDatabase.getDatabase(getApplication()).mailDao()
-                .insertMails(*fetchList.toTypedArray())
             mailList =
                 AppDatabase.getDatabase(getApplication()).mailDao()
                     .getMailListByPage(page.value, MailType.SENT)

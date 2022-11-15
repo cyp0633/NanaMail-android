@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.hnu.nanamail.R
+import com.hnu.nanamail.data.User
 import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
@@ -36,15 +37,11 @@ fun SentScreen(
     var refreshing by remember { mutableStateOf(false) }
     fun refresh() = refreshScope.launch {
         refreshing = true
-        viewModel.fetchMail()
+        viewModel.getMailList()
         refreshing = false
     }
-
     val refreshState = rememberPullRefreshState(refreshing, ::refresh)
 
-//    if (User.currentUser == null) {
-//        login.value = viewModel.checkLogin()
-//    }
     if (!login.value) {
         AlertDialog(
             onDismissRequest = {
@@ -107,7 +104,7 @@ fun SentScreen(
                 ) {
                     for (mail in viewModel.mailList) {
                         MailItemComponent(mail = mail) {
-                            navController.navigate("mail/${mail.uuid}")
+                            navController.navigate("detail/${mail.uuid}")
                         }
                     }
                 }

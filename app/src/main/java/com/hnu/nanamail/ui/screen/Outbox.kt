@@ -2,7 +2,6 @@ package com.hnu.nanamail.ui.screen
 
 import android.app.Application
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.hnu.nanamail.R
+import com.hnu.nanamail.data.User
 import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
@@ -31,9 +31,9 @@ fun OutboxScreen(
     }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-//    if (User.currentUser == null) {
-//        login.value = viewModel.checkLogin()
-//    }
+    if (User.currentUser == null) {
+        login.value = viewModel.checkLogin()
+    }
     if (!login.value) {
         AlertDialog(
             onDismissRequest = {
@@ -88,7 +88,7 @@ fun OutboxScreen(
             ) {
                 for (mail in viewModel.mailList) {
                     MailItemComponent(mail = mail) {
-                        navController.navigate("mail/${mail.uuid}")
+                        navController.navigate("detail/${mail.uuid}")
                     }
                 }
             }
