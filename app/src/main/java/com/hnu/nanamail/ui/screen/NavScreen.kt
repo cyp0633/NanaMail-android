@@ -14,7 +14,7 @@ import com.hnu.nanamail.R
 import com.hnu.nanamail.viewmodel.*
 
 @Composable
-fun NavScreen(application: Application) {
+fun NavScreen() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = NavItem.Inbox.route) {
         composable(NavItem.Setup.route) {

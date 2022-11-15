@@ -4,7 +4,6 @@ import android.util.Log
 import com.hnu.nanamail.data.Mail
 import com.hnu.nanamail.data.MailType
 import com.hnu.nanamail.data.Pop3Backend
-import kotlinx.coroutines.flow.flow
 import java.util.*
 import javax.mail.Flags
 import javax.mail.Message

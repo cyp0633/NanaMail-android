@@ -17,13 +17,6 @@ class SentViewModel(application: Application) : AndroidViewModel(application) {
     var mailList = mutableListOf<Mail>()
     val page = mutableStateOf(0)
 
-    fun checkLogin(): Boolean {
-        viewModelScope.launch(Dispatchers.IO) {
-            User.currentUser = AppDatabase.getDatabase(getApplication()).userDao().getUser()
-        }
-        return User.currentUser != null
-    }
-
     // 从数据库中获取邮件（不联网）
     fun getMailList() {
         viewModelScope.launch(Dispatchers.IO) {

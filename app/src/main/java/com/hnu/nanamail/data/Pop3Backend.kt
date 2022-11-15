@@ -1,10 +1,8 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
-import androidx.lifecycle.ViewModelStore
 import com.hnu.nanamail.util.parseMessagesIntoMails
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.mail.*
@@ -21,7 +19,7 @@ object Pop3Backend {
     /**
      * 从 User.currentUser 中获取服务器信息
      */
-    fun init() {
+    private fun init() {
         mailAddress = User.currentUser?.mailAddress ?: ""
         password = User.currentUser?.password ?: ""
         server = User.currentUser?.pop3Server ?: ""

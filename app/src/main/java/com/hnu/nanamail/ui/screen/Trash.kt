@@ -1,7 +1,6 @@
 package com.hnu.nanamail.ui.screen
 
 import android.app.Application
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.ui.component.DrawerComponent
-import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.TrashViewModel
 import kotlinx.coroutines.delay

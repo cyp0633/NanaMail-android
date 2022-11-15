@@ -18,7 +18,6 @@ import com.hnu.nanamail.R
 import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
-import com.hnu.nanamail.viewmodel.OutboxViewModel
 import com.hnu.nanamail.viewmodel.SentViewModel
 import kotlinx.coroutines.launch
 

@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.viewmodel.SetupViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
