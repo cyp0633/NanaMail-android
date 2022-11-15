@@ -1,8 +1,10 @@
 package com.hnu.nanamail.util
 
+import android.util.Log
 import com.hnu.nanamail.data.Mail
 import com.hnu.nanamail.data.MailType
 import com.hnu.nanamail.data.Pop3Backend
+import kotlinx.coroutines.flow.flow
 import java.util.*
 import javax.mail.Flags
 import javax.mail.Message
@@ -21,15 +23,20 @@ fun isRead(message: Message): Boolean {
 
 // 是否含有附件（Copilot 补全，我也不知道对不对）
 fun hasAttachment(message: Message): Boolean {
-    val contentType = message.contentType
-    if (contentType.contains("multipart")) {
-        val multipart = message.content as Multipart
-        for (i in 0 until multipart.count) {
-            val bodyPart = multipart.getBodyPart(i)
-            if (Part.ATTACHMENT.equals(bodyPart.disposition, ignoreCase = true)) {
-                return true
+    try {
+        val contentType = message.contentType
+        if (contentType.contains("multipart")) {
+            val multipart = message.content as Multipart
+            for (i in 0 until multipart.count) {
+                val bodyPart = multipart.getBodyPart(i)
+                if (Part.ATTACHMENT.equals(bodyPart.disposition, ignoreCase = true)) {
+                    return true
+                }
             }
         }
+    } catch (e: Exception) {
+        Log.e("MailUtil", "exception: ${e.message}, ${e.cause}")
+        e.printStackTrace()
     }
     return false
 }
@@ -80,7 +87,8 @@ fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> 
     var mailList = mutableListOf<Mail>()
     for (m in msg) {
         val isRead = isRead(m)
-        val hasAttachment = hasAttachment(m)
+//        val hasAttachment = hasAttachment(m)
+        val hasAttachment = false
 //        val content = parseContent(m)
         val content = "test"
         // TODO: 解析图片
