@@ -63,7 +63,7 @@ fun ComposeScreen(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = viewModel.username.value,
+                    text = viewModel.username,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
