@@ -30,8 +30,13 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         db.mailDao().markAsRead(mail.value.uuid, false)
     }
 
+    /**
+     * 删除邮件
+     *
+     * 使用软删除，防止删除后从网络再拉下来
+     */
     fun delete() = viewModelScope.launch(Dispatchers.IO) {
         val db = AppDatabase.getDatabase(getApplication())
-        db.mailDao().deleteMails(mail.value)
+        db.mailDao().moveToSent(mail.value.uuid, MailType.DELETED)
     }
 }

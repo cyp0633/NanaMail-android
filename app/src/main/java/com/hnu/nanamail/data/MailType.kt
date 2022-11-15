@@ -10,5 +10,7 @@ enum class MailType {
     // 垃圾邮件
     TRASH,
     // 发送中
-    OUTBOX
+    OUTBOX,
+    // 已删除
+    DELETED
 }
