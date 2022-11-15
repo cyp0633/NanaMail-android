@@ -20,9 +20,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /**
      * 清空所有邮件
      */
-    fun clearMails() = viewModelScope.launch(Dispatchers.IO) {
-        val db = AppDatabase.getDatabase(getApplication())
-        db.mailDao().clearAll()
+    fun clearMails() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val db = AppDatabase.getDatabase(getApplication())
+            db.mailDao().clearAll()
+
+        }
         Toast.makeText(getApplication(), "清空成功", Toast.LENGTH_SHORT).show()
     }
 }
