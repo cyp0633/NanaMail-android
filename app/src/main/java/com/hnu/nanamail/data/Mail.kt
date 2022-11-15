@@ -9,7 +9,7 @@ import javax.mail.Message
 
 @Entity
 data class Mail(
-    // 邮件 UUID
+    // 邮件 UID+时间戳的 MD5，用于索引+去重
     @PrimaryKey
     @ColumnInfo(name = "uuid")
     val uuid: String = "",

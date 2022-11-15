@@ -18,6 +18,13 @@ interface MailDao {
     fun insertMails(vararg mails: Mail)
 
     /**
+     * 向数据库插入一封邮件
+     * @param mail 要插入的邮件
+     */
+    @Insert
+    fun insertMail(mail: Mail)
+
+    /**
      * 删除数据库中的多封邮件
      * @param mails 邮件列表
      */

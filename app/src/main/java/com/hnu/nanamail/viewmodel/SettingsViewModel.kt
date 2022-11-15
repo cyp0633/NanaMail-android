@@ -1,6 +1,7 @@
 package com.hnu.nanamail.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hnu.nanamail.dao.AppDatabase
@@ -22,5 +23,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun clearMails() = viewModelScope.launch(Dispatchers.IO) {
         val db = AppDatabase.getDatabase(getApplication())
         db.mailDao().clearAll()
+        Toast.makeText(getApplication(), "清空成功", Toast.LENGTH_SHORT).show()
     }
 }

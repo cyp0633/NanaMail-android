@@ -25,7 +25,7 @@ class ComposeViewModel(application: Application) : AndroidViewModel(application)
 
     fun sendMail() {
         val mail = Mail(
-            uuid = UUID.randomUUID().toString(),
+            uuid = UUID.randomUUID().toString(), // 此处仍然可以用 UUID，因为不会重新抓取邮件
             account = username,
             sender = username,
             senderAddress = username,

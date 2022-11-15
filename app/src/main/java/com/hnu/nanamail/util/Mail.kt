@@ -99,23 +99,25 @@ fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> 
         val uid = m.messageNumber
         val subject = m.subject
         val preview = if (content.length > 100) content.substring(0, 100) else content
-        val mail = Mail(
-            uuid = UUID.randomUUID().toString(),
-            account = Pop3Backend.mailAddress,
-            sender = from,
-            senderAddress = fromAddress,
-            recipientTo = recipientTo,
-            recipientCc = recipientCc,
-            subject = subject,
-            content = content,
-            preview = preview,
-            isRead = isRead,
-            hasAttachment = hasAttachment,
-            attachmentDownloaded = false,
-            uid = uid,
-            type = mailType,
-            time = m.sentDate.time
-        )
+        val mail = "${uid}+${m.sentDate.time}".md5()?.let { md5 ->
+            Mail(
+                uuid = md5,
+                account = Pop3Backend.mailAddress,
+                sender = from,
+                senderAddress = fromAddress,
+                recipientTo = recipientTo,
+                recipientCc = recipientCc,
+                subject = subject,
+                content = content,
+                preview = preview,
+                isRead = isRead,
+                hasAttachment = hasAttachment,
+                attachmentDownloaded = false,
+                uid = uid,
+                type = mailType,
+                time = m.sentDate.time
+            )
+        }
         mailList = mailList.plus(mail) as MutableList<Mail>
     }
     return mailList

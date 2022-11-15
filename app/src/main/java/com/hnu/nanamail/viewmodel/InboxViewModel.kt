@@ -1,6 +1,8 @@
 package com.hnu.nanamail.viewmodel
 
 import android.app.Application
+import android.database.sqlite.SQLiteConstraintException
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -39,10 +41,16 @@ class InboxViewModel(application: Application) : AndroidViewModel(application) {
 
     // 从远程收件箱获取邮件
     fun fetchMail() {
+        val db = AppDatabase.getDatabase(getApplication())
         viewModelScope.launch(Dispatchers.IO) {
             val fetchList = Pop3Backend.fetchInbox()
-            AppDatabase.getDatabase(getApplication()).mailDao()
-                .insertMails(*fetchList.toTypedArray())
+            for (mail in fetchList) {
+                try {
+                    db.mailDao().insertMail(mail)
+                } catch (e: SQLiteConstraintException) {
+                    Log.i("InboxViewModel", "fetchMail: removed duplicate mail")
+                }
+            }
             mailList =
                 AppDatabase.getDatabase(getApplication()).mailDao()
                     .getMailListLiveDataByPage(
