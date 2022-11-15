@@ -49,4 +49,12 @@ interface MailDao {
      */
     @Query("SELECT * FROM mail WHERE type = :type ORDER BY time DESC LIMIT :page, 10")
     fun getMailListLiveDataByPage(page: Int, type: MailType): LiveData<List<Mail>>
+
+    /**
+     * 将特定 uuid 的邮件标记读取状态
+     * @param uuid 邮件 UUID
+     * @param isRead 是否已读，默认为是
+     */
+    @Query("UPDATE mail SET is_read = :isRead WHERE uuid = :uuid")
+    fun markAsRead(uuid: String, isRead: Boolean = true)
 }

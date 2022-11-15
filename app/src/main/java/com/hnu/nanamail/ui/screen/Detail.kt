@@ -46,8 +46,14 @@ fun DetailScreen(
             topBar = {
                 DetailTopBar(
                     onClickBack = { navController.popBackStack() },
-                    onClickUnread = { viewModel.setUnread() },
-                    onClickDelete = { viewModel.delete() },
+                    onClickUnread = {
+                        viewModel.setUnread()
+                        navController.popBackStack()
+                    },
+                    onClickDelete = {
+                        viewModel.delete()
+                        navController.popBackStack()
+                    },
                 )
             }
         ) { paddingValues ->
