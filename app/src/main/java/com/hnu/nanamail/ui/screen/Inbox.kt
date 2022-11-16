@@ -83,7 +83,7 @@ fun InboxScreen(
         },
         modifier = Modifier.fillMaxSize(),
         drawerState = drawerState,
-        gesturesEnabled = false
+        gesturesEnabled = drawerState.isOpen,
     ) {
         Scaffold(
             topBar = {

@@ -44,7 +44,7 @@ fun ContactItemComponent(
             Text(
                 text = contact.name,
                 modifier = Modifier.padding(vertical = 4.dp),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary
             )
             Text(

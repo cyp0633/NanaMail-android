@@ -84,6 +84,7 @@ fun ContactsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .heightIn(min = 300.dp)
+                        .padding(horizontal = 20.dp)
                 )
                 PullRefreshIndicator(
                     refreshing = refreshing,

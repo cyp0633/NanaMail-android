@@ -65,7 +65,7 @@ fun OutboxScreen(
             )
         },
         drawerState = drawerState,
-        gesturesEnabled = false
+        gesturesEnabled = drawerState.isOpen,
     ) {
         Scaffold(
             topBar = {

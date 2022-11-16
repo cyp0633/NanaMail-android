@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hnu.nanamail.R
 import com.hnu.nanamail.data.Contact
+import com.hnu.nanamail.ui.component.BackTopBarComponent
 import com.hnu.nanamail.ui.component.TopBarComponent
 import com.hnu.nanamail.viewmodel.ContactDetailViewModel
 
@@ -36,7 +37,9 @@ fun ContactDetailScreen(
     } else {
         Scaffold(
             topBar = {
-                TopBarComponent(title = viewModel.contact.value.name)
+                BackTopBarComponent(
+                    title = viewModel.contact.value.name,
+                    onBackClick = { navController.popBackStack() })
             }
         ) { paddingValues ->
             ContactDetailComponent(

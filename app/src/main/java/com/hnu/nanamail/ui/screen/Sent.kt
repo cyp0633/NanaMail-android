@@ -76,7 +76,7 @@ fun SentScreen(
             )
         },
         drawerState = drawerState,
-        gesturesEnabled = false
+        gesturesEnabled = drawerState.isOpen,
     ) {
         Scaffold(
             topBar = {
