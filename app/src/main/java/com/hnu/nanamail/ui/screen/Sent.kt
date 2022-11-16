@@ -20,6 +20,7 @@ import com.hnu.nanamail.ui.component.DrawerComponent
 import com.hnu.nanamail.ui.component.MailItemComponent
 import com.hnu.nanamail.ui.component.MainTopBarComponent
 import com.hnu.nanamail.viewmodel.SentViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -38,8 +39,10 @@ fun SentScreen(
     fun refresh() = refreshScope.launch {
         refreshing = true
         viewModel.getMailList()
+        delay(1000)
         refreshing = false
     }
+
     val refreshState = rememberPullRefreshState(refreshing, ::refresh)
 
     if (!login.value) {
