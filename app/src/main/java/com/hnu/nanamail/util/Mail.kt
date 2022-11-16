@@ -96,7 +96,7 @@ fun parseMessagesIntoMails(msg: Array<Message>, mailType: MailType): List<Mail> 
             Mail(
                 uuid = md5,
                 account = Pop3Backend.mailAddress,
-                sender = from,
+                sender = from ?: fromAddress,
                 senderAddress = fromAddress,
                 recipientTo = recipientTo,
                 recipientCc = recipientCc,
