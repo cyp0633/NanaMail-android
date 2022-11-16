@@ -47,4 +47,7 @@
     <string name="think_twice_before_proceed">请三思而后行！</string>
     <string name="clear_mails">清空邮件数据库</string>
     <string name="enable_starttls">启用 STARTTLS</string>
+    <string name="contacts">联系人</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="contact_detail">联系人详情</string>
 </resources>

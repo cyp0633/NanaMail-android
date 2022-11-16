@@ -47,4 +47,7 @@
     <string name="destructive_function">Destructive function</string>
     <string name="think_twice_before_proceed">Please think twice before you proceed!</string>
     <string name="clear_mails">Clear mails</string>
+    <string name="enable_starttls">Enable STARTTLS</string>
+    <string name="contacts">Contacts</string>
+    <string name="add_contact">Add contact</string>
 </resources>
