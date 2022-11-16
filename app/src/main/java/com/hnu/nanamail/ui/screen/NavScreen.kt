@@ -94,6 +94,13 @@ fun NavScreen() {
                 uuid = it.arguments?.getString("uuid") ?: ""
             )
         }
+        composable(NavItem.AddContact.route) {
+            val viewModel = ViewModelProvider(it)[AddContactViewModel::class.java]
+            AddContactScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
     }
 }
 
