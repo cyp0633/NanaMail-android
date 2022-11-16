@@ -50,6 +50,8 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
             pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
+            exclude 'META-INF/NOTICE.md'
+            exclude 'META-INF/LICENSE.md'
         }
     }
 }
@@ -74,8 +76,8 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // java mail
-    implementation 'com.sun.mail:android-mail:1.6.2'
-    implementation 'com.sun.mail:android-activation:1.6.2'
+    implementation 'com.sun.mail:android-mail:1.6.6'
+    implementation 'com.sun.mail:android-activation:1.6.6'
 
     // jetpack room
     def room_version = "2.4.3"
@@ -99,4 +101,7 @@ dependencies {
 
     // LiveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-alpha02'
+
+    // jsoup html parser
+    implementation 'org.jsoup:jsoup:1.15.3'
 }
