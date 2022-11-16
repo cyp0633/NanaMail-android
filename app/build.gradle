@@ -12,8 +12,8 @@ android {
         applicationId "com.hnu.nanamail"
         minSdk 31
         targetSdk 33
-        versionCode 100021
-        versionName "1.0.2 Alpha"
+        versionCode 101001
+        versionName "1.1.0 Alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
