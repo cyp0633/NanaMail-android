@@ -1,6 +1,8 @@
 package com.hnu.nanamail.data
 
+import android.os.Build
 import android.util.Log
+import com.hnu.nanamail.BuildConfig
 import com.hnu.nanamail.util.parseMessagesIntoMails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -83,6 +85,9 @@ object Pop3Backend {
             verify()
         }
         try {
+            if (BuildConfig.DEBUG) {
+                session.debug = true
+            }
             store = session.getStore("pop3")
             store.connect(mailAddress, password)
             emailFolder = store.getFolder("INBOX")

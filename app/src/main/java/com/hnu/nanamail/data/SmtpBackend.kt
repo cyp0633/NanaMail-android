@@ -1,6 +1,7 @@
 package com.hnu.nanamail.data
 
 import android.util.Log
+import com.hnu.nanamail.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -48,6 +49,9 @@ object SmtpBackend {
                 }
             }
             val session = Session.getInstance(props, auth)
+            if (BuildConfig.DEBUG) {
+                session.debug = true
+            }
             val transport = session.transport
             transport.connect(server, portNumber, mailAddress, password)
             transport.close()
@@ -83,7 +87,7 @@ object SmtpBackend {
         recipientBcc: String,
         subject: String,
         content: String
-    ):Boolean {
+    ): Boolean {
         try {
             if (mailAddress == "" || password == "" || server == "" || portNumber == 0) {
                 init()
