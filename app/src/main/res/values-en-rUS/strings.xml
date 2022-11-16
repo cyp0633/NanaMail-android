@@ -50,4 +50,6 @@
     <string name="enable_starttls">Enable STARTTLS</string>
     <string name="contacts">Contacts</string>
     <string name="add_contact">Add contact</string>
+    <string name="contact_not_found">Contact not found</string>
+    <string name="contact_detail">Contact detail</string>
 </resources>

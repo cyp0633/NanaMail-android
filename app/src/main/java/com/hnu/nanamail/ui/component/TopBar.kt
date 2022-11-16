@@ -23,7 +23,7 @@ fun BackTopBarComponent(
     title: String,
     onBackClick: () -> Unit
 ) {
-    TopAppBar (
+    CenterAlignedTopAppBar(
         title = {
             Text(
                 text = title,
@@ -31,7 +31,7 @@ fun BackTopBarComponent(
             )
         },
         navigationIcon = {
-            IconButton(onClick = {onBackClick()}) {
+            IconButton(onClick = { onBackClick() }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "返回",
@@ -48,7 +48,7 @@ fun BackTopBarComponent(
 fun TopBarComponent(
     title: String
 ) {
-    TopAppBar (
+    CenterAlignedTopAppBar(
         title = {
             Text(
                 text = title,

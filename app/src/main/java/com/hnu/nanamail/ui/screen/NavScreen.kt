@@ -1,6 +1,5 @@
 package com.hnu.nanamail.ui.screen
 
-import android.app.Application
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -82,6 +81,17 @@ fun NavScreen() {
             ContactsScreen(
                 navController = navController,
                 viewModel = viewModel
+            )
+        }
+        composable(
+            NavItem.ContactDetail.route + "/{uuid}",
+            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+        ) {
+            val viewModel = ViewModelProvider(it)[ContactDetailViewModel::class.java]
+            ContactDetailScreen(
+                navController = navController,
+                viewModel = viewModel,
+                uuid = it.arguments?.getString("uuid") ?: ""
             )
         }
     }
