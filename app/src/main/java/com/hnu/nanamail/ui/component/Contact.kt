@@ -1,23 +1,26 @@
 package com.hnu.nanamail.ui.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.hnu.nanamail.data.Contact
 
+/**
+ * 联系人项
+ * @property contact 联系人
+ * @property modifier Modifier
+ * @property onClick 点击事件，如添加联系人、进入详情等
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactItemComponent(
@@ -34,7 +37,9 @@ fun ContactItemComponent(
         shape = RoundedCornerShape(0.dp),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
@@ -49,6 +54,31 @@ fun ContactItemComponent(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary
             )
+        }
+    }
+}
+
+/**
+ * 联系人列表
+ * @property contacts 联系人列表，LiveData
+ * @property modifier Modifier
+ * @property onClickItem 点击事件，如添加联系人、进入详情等
+ */
+@Composable
+fun ContactListComponent(
+    contacts: MutableLiveData<List<Contact>>,
+    onClickItem: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+    ) {
+        for (contact in contacts.value!!) {
+            ContactItemComponent(
+                contact = contact,
+                onClick = onClickItem,
+            )
+            Divider()
         }
     }
 }
