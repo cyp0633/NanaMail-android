@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hnu.nanamail.data.Contact
 
@@ -66,17 +65,17 @@ fun ContactItemComponent(
  */
 @Composable
 fun ContactListComponent(
-    contacts: MutableLiveData<List<Contact>>,
-    onClickItem: () -> Unit,
+    contacts: List<Contact>,
+    onClickItem: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
     ) {
-        for (contact in contacts.value!!) {
+        for (contact in contacts) {
             ContactItemComponent(
                 contact = contact,
-                onClick = onClickItem,
+                onClick = { onClickItem(contact.uuid) },
             )
             Divider()
         }
