@@ -260,6 +260,8 @@ fun CommunicationDetailComponent(
                         text = " · " + mail.senderAddress,
                         color = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.padding(vertical = 5.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
                 // 收件人
