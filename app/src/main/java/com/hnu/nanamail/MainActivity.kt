@@ -1,9 +1,11 @@
 package com.hnu.nanamail
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -22,12 +24,15 @@ import com.hnu.nanamail.ui.theme.NanaMailTheme
 import kotlinx.coroutines.*
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.R)
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 用于沉浸式状态栏
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        window.setDecorFitsSystemWindows(false)
+        if(Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
+            window.setDecorFitsSystemWindows(false)
+        }
         // 从数据库读取用户信息
         GlobalScope.launch(Dispatchers.IO) {
             getUser()
