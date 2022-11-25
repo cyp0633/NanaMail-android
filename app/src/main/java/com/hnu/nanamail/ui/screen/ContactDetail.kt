@@ -74,6 +74,13 @@ fun ContactDetailComponent(
         Text(
             text = contact.address,
             modifier = Modifier.padding(vertical = 10.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        // 描述
+        Text(
+            text = contact.description,
+            modifier = Modifier.padding(vertical = 10.dp),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.secondary
         )
